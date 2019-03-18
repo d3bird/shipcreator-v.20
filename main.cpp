@@ -5,6 +5,9 @@
 
 int main() {
 	ship s(20, 20);
+
+
+	s.fillspace();
 	s.print();
 
 
