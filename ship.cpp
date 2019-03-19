@@ -94,37 +94,31 @@ bool ship::detectRoom(int x, int y) {
 	return true;
 }
 
+
 void ship::mergerooms() {
 	std::cout<<"merging rooms" << std::endl;
-	int roomsfound = 0;
-	bool finding;
-	int xloc;
-	int yloc;
-	bool tr;
-	bool bl;
-	bool br;
 
 	for (int x = 0; x < xsize; x++) {
 		for (int y = 0; y < ysize; y++) {
 			
 			if (map[y][x] == "_"&&y>0 && y<ysize) {
 				if (map[y + 1][x] == "." && map[y - 1][x] == ".") {
-					//map[y][x] == " ";
-					std::cout << "merging" << std::endl;
+					map[y][x] = ".";
+					//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
 				}
 			}
 			else if (map[y][x] == "|"&&x>0&&x<xsize) {
 				if (map[y][x + 1] == "."&&map[y][x - 1] == ".") {
-					//map[y][x] == "A";
+					
 					map[y][x] = ".";
-					std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
+					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
 				}
 			}
 		}
 
 	}
 	//map[0][0] = "a";
-	std::cout << "rooms found: " << roomsfound << std::endl;
+	//std::cout << "rooms found: " << roomsfound << std::endl;
 }
 
 void ship::debugprint() {
