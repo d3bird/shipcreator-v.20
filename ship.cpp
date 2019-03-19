@@ -48,38 +48,40 @@ void ship::fillspace() {// fills the entire map with rooms
 		
 		if ((yloc + rmsize) >= ysize) {// at the very bottom and neets to move to the next row
 			xloc += 5;
+			yloc = 0;
 			if (xloc >= xsize) {// if the x axis runs out then it moves to the next x pos
 				creating = false;
 				std::cout << "ran out of space" << std::endl;
 			}
 			
 		}
-		else {//there should be room to gen the room
+		else if(xloc+rmsize<xsize){//there should be room to gen the room
 
 			for (int x = 0; x < rmsize; x++) {
 				for (int y = 0; y < rmsize; y++) {
 					if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1) ){
-						map[x][y] = ",";
+						map[yloc + y][xloc+x] = ",";
 					}else if (y == 0 || y == rmsize-1){
-						map[x][y] = "|";
+						map[yloc + y][xloc+x] = "_";
 					}
 					else if (x == 0 || x == rmsize - 1) {
-						map[x][y] = "_";
+						map[yloc + y][xloc + x] = "|";
 					}
 					else {
-						map[x][y] = ".";
+						map[yloc + y][xloc + x] = ".";
 					}
 	
 
 				}
 			}
-
+			yloc += rmsize+2;
 		}
 
 
 
 
 	}
+
 }
 
 
