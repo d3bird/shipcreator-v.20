@@ -4,12 +4,13 @@
 
 
 int main() {
-	ship s(20, 20);
+	ship s(100, 100);
 
 
 	s.fillspace();
-	s.print();
-
+	//s.print();
+	s.mergerooms();
+	s.debugprint();
 
 	std::cin.get();
 

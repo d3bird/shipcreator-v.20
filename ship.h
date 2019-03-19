@@ -10,15 +10,17 @@ public:
 	void gen_blank_map();
 	void fillspace();
 	void print();
+	void debugprint();
+	void mergerooms();
 
-	
+	bool detectRoom(int x, int y);
 
 	void setmaxroomsize(int x) { maxrs = x; }
 	void setminroomsize(int x) { minrs = x; }
 	int getmaxroomsize() { return maxrs; }
 	int getminroomsize() { return minrs; }
 
-
+	
 
 private:
 	int maxrs;
