@@ -43,6 +43,11 @@ void ship::fillspace() {// fills the entire map with rooms
 	int yloc = 0;
 	bool creating = true;
 	int rmsize;// = rand() % maxrs + minrs;
+	
+	int doors;
+	int lastrow = -1;
+	int lastcol = -1;
+
 	while (creating) {// the loop for creating rooms till no more wll fit
 		rmsize = rand() % maxrs + minrs;//generates the size of the room
 		
@@ -56,16 +61,34 @@ void ship::fillspace() {// fills the entire map with rooms
 			
 		}
 		else if(xloc+rmsize<xsize){//there should be room to gen the room
-
+			doors = rand() % 4;
+			doors++;//makesure that rooms dont have zero doors
+			int mid = rmsize / 2;// gets the middle of the room to place the doors
 			for (int x = 0; x < rmsize; x++) {
 				for (int y = 0; y < rmsize; y++) {
 					if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1) ){
 						map[yloc + y][xloc+x] = ",";
 					}else if (y == 0 || y == rmsize-1){
-						map[yloc + y][xloc+x] = "_";
+
+						if (x == mid && doors>0) {
+							map[yloc + y][xloc + x] = "d";
+							doors--;
+							
+						}
+						else {
+							map[yloc + y][xloc + x] = "_";
+						}
+
 					}
 					else if (x == 0 || x == rmsize - 1) {
+
+						if (y == mid && doors > 0) {
+							map[yloc + y][xloc + x] = "d";
+							doors--;
+							
+						}else {
 						map[yloc + y][xloc + x] = "|";
+					}
 					}
 					else {
 						map[yloc + y][xloc + x] = ".";
@@ -101,7 +124,7 @@ void ship::mergerooms() {
 	for (int x = 0; x < xsize; x++) {
 		for (int y = 0; y < ysize; y++) {
 			
-			if (map[y][x] == "_"&&y>0 && y<ysize) {
+			if (map[y][x] == "_"  &&y>0 && y<ysize) {
 				if (map[y + 1][x] == "." && map[y - 1][x] == ".") {
 					map[y][x] = ".";
 					//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
@@ -114,6 +137,20 @@ void ship::mergerooms() {
 					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
 				}
 			}
+
+			if (map[y][x] == "d") {
+				if (y == 0 || y==ysize-1) {// if the door is located on the left/right side of the map
+					map[y][x] = "_";
+				}
+				else if (x == 0 || x == xsize - 1) {//if the door is located ont the top/bottom of the map
+					map[y][x] = "|";
+				}
+				else if ((map[y][x+1]=="."&&map[y][x-1]==".") || (map[y+1][x]=="."&&map[y-1][x]==".")) {
+					map[y][x] = ".";
+				}
+
+			}
+
 		}
 
 	}
