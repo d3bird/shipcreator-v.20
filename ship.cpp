@@ -115,8 +115,8 @@ void ship::fillspace() {// fills the entire map with rooms
 void ship::mergerooms() {
 	std::cout<<"merging rooms" << std::endl;
 
-	for (int x = 0; x < xsize; x++) {
-		for (int y = 0; y < ysize; y++) {
+	for (int y = 0; y < ysize; y++) {
+		for (int x = 0; x < ysize; x++) {
 			
 			if (map[y][x] == "_"  &&y>0 && y<ysize) {
 				if (map[y + 1][x] == "." && map[y - 1][x] == ".") {
@@ -174,6 +174,8 @@ void ship::generateHallways() {
 	bool s;
 	bool w;
 	bool scouting;
+	bool lredge;
+	bool tdedge;
 	for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
 		connecting = true;
 		x = rmdoors[i].x;
@@ -189,6 +191,8 @@ void ship::generateHallways() {
 				e = false;
 				s = false;
 				w = false;
+				tdedge = false;
+				lredge = false;
 				if (map[y - 1][x] == " ") {//picks the starting direction
 					n = true;
 				}
@@ -228,12 +232,16 @@ void ship::generateHallways() {
 											connecting = false;
 										}
 									}
-
+																		
 									
-
-
+								}
+								else if (map[y][x] == "_" || map[y][x] == "|") {
+									map[y][x] = "d";
+									scouting = false;
+									connecting = false;
 								}
 								else {//if not then the it will trace the room
+								
 									scouting = false;
 									y++;
 									connecting = false;
@@ -242,6 +250,7 @@ void ship::generateHallways() {
 							}
 							else {
 								scouting = false;
+								tdedge = true;
 								y++;
 								connecting = false;
 
@@ -271,6 +280,11 @@ void ship::generateHallways() {
 									
 
 								}
+								else if (map[y][x] == "_" || map[y][x] == "|") {
+									map[y][x] = "d";
+									scouting = false;
+									connecting = false;
+								}
 								else {//if not then the it will trace the room
 									scouting = false;
 									x--;
@@ -279,6 +293,7 @@ void ship::generateHallways() {
 							}
 							else {
 								scouting = false;
+								lredge = true;
 								x--;
 								connecting = false;
 							}
@@ -309,6 +324,11 @@ void ship::generateHallways() {
 									
 
 								}
+								else if (map[y][x] == "_" || map[y][x] == "|") {
+									map[y][x] = "d";
+									scouting = false;
+									connecting = false;
+								}
 								else {//if not then the it will trace the room
 									scouting = false;
 									y--;
@@ -317,6 +337,7 @@ void ship::generateHallways() {
 							}
 							else {
 								scouting = false;
+								tdedge = true;
 								y--;
 								connecting = false;
 							}
@@ -342,6 +363,11 @@ void ship::generateHallways() {
 									}
 									
 								}
+								else if (map[y][x] == "_" || map[y][x] == "|") {
+									map[y][x] = "d";
+									scouting = false;
+									connecting = false;
+								}
 								else {//if not then the it will trace the room
 									scouting = false;
 									x++;
@@ -350,6 +376,7 @@ void ship::generateHallways() {
 							}
 							else {
 								scouting = false;
+								lredge = true;
 								x++;
 								connecting = false;
 							}
@@ -357,7 +384,14 @@ void ship::generateHallways() {
 						
 					}
 					else {//traces the object that it 
-						
+					if (lredge) {//if the hallwalys run into the edge
+
+
+						}else
+					if (tdedge) {//if the hallwalys run into the edge
+
+
+					}
 						//map[y][x] = "H";
 						/*if ((map[y - 1][x] == "d" || map[y][x + 1] == "d" || map[y + 1][x] == "d" || map[y][x - 1] == "d") ||//checks for doors
 							(map[y - 1][x] == "H" || map[y][x + 1] == "H" || map[y + 1][x] == "H" || map[y][x - 1] == "H")) {//checks for hallways
