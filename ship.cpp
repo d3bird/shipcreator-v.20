@@ -432,7 +432,6 @@ void ship::debugprint() {
 
 }
 
-
 void ship::print() {
 
 	for (int i = 0; i < xsize; i++) {

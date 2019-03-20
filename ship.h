@@ -20,8 +20,8 @@ public:
 	void print();
 	void debugprint();
 	void mergerooms();
-
 	void generateHallways();
+	void fillrooms();
 
 	bool detectRoom(int x, int y);
 
@@ -30,7 +30,7 @@ public:
 	int getmaxroomsize() { return maxrs; }
 	int getminroomsize() { return minrs; }
 
-	
+	std::string ** getmap() { return map; }
 
 private:
 	int maxrs;
