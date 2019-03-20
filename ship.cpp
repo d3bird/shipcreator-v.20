@@ -207,28 +207,69 @@ void ship::generateHallways() {
 				while (connecting) {// connecting it to to the hallway/another door only moving one block per cycle
 				
 					if (scouting) {//moving streight untill it hits a wall/object
-						if (n) {
+						if (n) {//going north
 							y--;
-							if(y>=0)
-							if (map[y][x] == " ") {//if it is empty then add a hallway
-								map[y][x] = "H";
-							}
-							else {//if not then the it will trace the room
-								scouting = false;
-								y++;
-								connecting = false;
+							if (y >= 0) {
+								if (map[y][x] == " ") {//if it is empty then add a hallway
+									map[y][x] = "H";
+
+									//check to see if the soundings are a door/hallway
+
+									if (y - 1 >= 0 && y+1<ysize) {
+										if (map[y - 1][x] == "H" || map[y][x - 1] == "H" || map[y - 1][x] == "d" || map[y][x - 1] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+
+									if (x - 1 >= 0 && x+1 < xsize) {
+										if (map[y][x + 1] == "H" || map[y][x + 1] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+
+									
+
+
+								}
+								else {//if not then the it will trace the room
+									scouting = false;
+									y++;
+									connecting = false;
+
+								}
 							}
 							else {
 								scouting = false;
 								y++;
 								connecting = false;
+
 							}
 						}
-						else if (e) {
+						else if (e) {//going east
 							x++;
 							if (x < xsize) {
 								if (map[y][x] == " ") {//if it is empty then add a hallway
 									map[y][x] = "H";
+
+									//check to see if the soundings are a door/hallway
+
+									if (y - 1 >= 0 && y + 1 < ysize) {
+										if ((map[y - 1][x] == "H" || map[y + 1][x] == "H") ||
+											(map[y - 1][x] == "d" || map[y + 1][x] == "d")) {
+											scouting = false;
+											connecting = false;
+										}
+									}
+									if (x - 1 >= 0 && x + 1 < xsize) {
+										if (map[y][x + 1] == "H" || map[y][x + 1] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+									
+
 								}
 								else {//if not then the it will trace the room
 									scouting = false;
@@ -243,11 +284,29 @@ void ship::generateHallways() {
 							}
 
 						}
-						else if (s) {
+						else if (s) {//going south
 							y++;
 							if (y < ysize) {
 								if (map[y][x] == " ") {//if it is empty then add a hallway
 									map[y][x] = "H";
+
+									//check to see if the soundings are a door/hallway
+
+									if (y - 1 >= 0 && y + 1 < ysize) {
+										if (map[y + 1][x] == "H" || map[y + 1][x] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+
+									if (x - 1 >= 0 && x + 1 < xsize) {
+										if ((map[y][x + 1] == "H" || map[y][x - 1] == "H") ||
+											(map[y][x + 1] == "d" || map[y][x - 1] == "d")) {
+											scouting = false;
+											connecting = false;
+										}
+									}
+									
 
 								}
 								else {//if not then the it will trace the room
@@ -262,11 +321,26 @@ void ship::generateHallways() {
 								connecting = false;
 							}
 						}
-						else if (w) {
+						else if (w) {//going west
 							x--;
 							if (x >= 0) {
 								if (map[y][x] == " ") {//if it is empty then add a hallway
 									map[y][x] = "H";
+									//check to see if the soundings are a door/hallway
+									if (y - 1 >= 0 && y + 1 < ysize) {
+										if (map[y + 1][x] == "H" || map[y + 1][x] == "d"|| map[y - 1][x] == "H" || map[y - 1][x] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+
+									if (x - 1 >= 0 && x + 1 < xsize) {
+										if ((map[y][x - 1] == "H") || map[y][x - 1] == "d") {
+											scouting = false;
+											connecting = false;
+										}
+									}
+									
 								}
 								else {//if not then the it will trace the room
 									scouting = false;
@@ -284,11 +358,11 @@ void ship::generateHallways() {
 					}
 					else {//traces the object that it 
 						
-						map[y][x] = "H";
-						if ((map[y - 1][x] == "d" || map[y][x + 1] == "d" || map[y + 1][x] == "d" || map[y][x - 1] == "d") ||//checks for doors
+						//map[y][x] = "H";
+						/*if ((map[y - 1][x] == "d" || map[y][x + 1] == "d" || map[y + 1][x] == "d" || map[y][x - 1] == "d") ||//checks for doors
 							(map[y - 1][x] == "H" || map[y][x + 1] == "H" || map[y + 1][x] == "H" || map[y][x - 1] == "H")) {//checks for hallways
 							connecting = false;
-						}
+						}*/
 					}
 					
 
