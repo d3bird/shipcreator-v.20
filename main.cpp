@@ -10,7 +10,9 @@ int main() {
 	s.fillspace();
 	//s.print();
 	s.mergerooms();
-	s.debugprint();
+	s.generateHallways();
+	s.print();
+	//s.debugprint();
 
 	std::cin.get();
 

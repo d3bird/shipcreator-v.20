@@ -1,5 +1,13 @@
 #pragma once
 #include <string>
+#include <vector>
+
+struct dcor
+{
+	int x;
+	int y;
+};
+
 
 class ship
 {
@@ -12,6 +20,8 @@ public:
 	void print();
 	void debugprint();
 	void mergerooms();
+
+	void generateHallways();
 
 	bool detectRoom(int x, int y);
 
@@ -29,6 +39,8 @@ private:
 	int ysize;
 	int roomnumber;
 	std::string ** map;
+
+	std::vector<dcor> rmdoors;
 	
 
 

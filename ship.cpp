@@ -36,6 +36,8 @@ void ship::gen_blank_map() {//resets the entire map
 }
 
 
+
+
 void ship::fillspace() {// fills the entire map with rooms
 	srand(time(NULL));
 	int roomsgenerated = 0;
@@ -63,6 +65,7 @@ void ship::fillspace() {// fills the entire map with rooms
 		else if(xloc+rmsize<xsize){//there should be room to gen the room
 			doors = rand() % 4;
 			doors++;//makesure that rooms dont have zero doors
+			
 			int mid = rmsize / 2;// gets the middle of the room to place the doors
 			for (int x = 0; x < rmsize; x++) {
 				for (int y = 0; y < rmsize; y++) {
@@ -105,16 +108,7 @@ void ship::fillspace() {// fills the entire map with rooms
 
 
 	}
-	std::cout << "rooms generated: " << roomsgenerated << std::endl;
-}
-
-
-bool ship::detectRoom(int x, int y) {
-	bool finding = true;
-
-
-
-	return true;
+	//std::cout << "rooms generated: " << roomsgenerated << std::endl;
 }
 
 
@@ -141,12 +135,25 @@ void ship::mergerooms() {
 			if (map[y][x] == "d") {
 				if (y == 0 || y==ysize-1) {// if the door is located on the left/right side of the map
 					map[y][x] = "_";
+					
 				}
 				else if (x == 0 || x == xsize - 1) {//if the door is located ont the top/bottom of the map
 					map[y][x] = "|";
+					
 				}
 				else if ((map[y][x+1]=="."&&map[y][x-1]==".") || (map[y+1][x]=="."&&map[y-1][x]==".")) {
 					map[y][x] = ".";
+					
+				}
+				else {
+					//only add doors that have areas to connect to other doors/hallways
+					if (map[y - 1][x] == " " || map[y][x + 1] == " " || map[y + 1][x] == " " || map[y][x - 1] == " ") {
+						dcor temp;
+						temp.x = x;
+						temp.y = y;
+
+						rmdoors.push_back(temp);
+					}
 				}
 
 			}
@@ -156,6 +163,141 @@ void ship::mergerooms() {
 	}
 	//map[0][0] = "a";
 	//std::cout << "rooms found: " << roomsfound << std::endl;
+}
+
+void ship::generateHallways() {
+	bool connecting;
+	int x;
+	int y;
+	bool n;
+	bool e;
+	bool s;
+	bool w;
+	bool scouting;
+	for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
+		connecting = true;
+		x = rmdoors[i].x;
+		y = rmdoors[i].y;
+		
+
+			//chcking to see if it is connected to the hallway
+			if (map[y][x + 1] != "H"  && map[y + 1][x] != "H"
+				&& map[y][x - 1] != "H" && map[y - 1][x] != "H") {
+
+				//check to see were to place the hallway
+				n = false;
+				e = false;
+				s = false;
+				w = false;
+				if (map[y - 1][x] == " ") {//picks the starting direction
+					n = true;
+				}
+				else if (map[y][x + 1] == " ") {
+					e = true;
+				}
+				else if (map[y + 1][x] == " ") {
+					s = true;
+				}
+				else if (map[y][x - 1] == " ") {
+					w = true;
+				}
+
+				 scouting = true;
+
+				while (connecting) {// connecting it to to the hallway/another door only moving one block per cycle
+				
+					if (scouting) {//moving streight untill it hits a wall/object
+						if (n) {
+							y--;
+							if(y>=0)
+							if (map[y][x] == " ") {//if it is empty then add a hallway
+								map[y][x] = "H";
+							}
+							else {//if not then the it will trace the room
+								scouting = false;
+								y++;
+								connecting = false;
+							}
+							else {
+								scouting = false;
+								y++;
+								connecting = false;
+							}
+						}
+						else if (e) {
+							x++;
+							if (x < xsize) {
+								if (map[y][x] == " ") {//if it is empty then add a hallway
+									map[y][x] = "H";
+								}
+								else {//if not then the it will trace the room
+									scouting = false;
+									x--;
+									connecting = false;
+								}
+							}
+							else {
+								scouting = false;
+								x--;
+								connecting = false;
+							}
+
+						}
+						else if (s) {
+							y++;
+							if (y < ysize) {
+								if (map[y][x] == " ") {//if it is empty then add a hallway
+									map[y][x] = "H";
+
+								}
+								else {//if not then the it will trace the room
+									scouting = false;
+									y--;
+									connecting = false;
+								}
+							}
+							else {
+								scouting = false;
+								y--;
+								connecting = false;
+							}
+						}
+						else if (w) {
+							x--;
+							if (x >= 0) {
+								if (map[y][x] == " ") {//if it is empty then add a hallway
+									map[y][x] = "H";
+								}
+								else {//if not then the it will trace the room
+									scouting = false;
+									x++;
+									connecting = false;
+								}
+							}
+							else {
+								scouting = false;
+								x++;
+								connecting = false;
+							}
+						}
+						
+					}
+					else {//traces the object that it 
+						
+						map[y][x] = "H";
+						if ((map[y - 1][x] == "d" || map[y][x + 1] == "d" || map[y + 1][x] == "d" || map[y][x - 1] == "d") ||//checks for doors
+							(map[y - 1][x] == "H" || map[y][x + 1] == "H" || map[y + 1][x] == "H" || map[y][x - 1] == "H")) {//checks for hallways
+							connecting = false;
+						}
+					}
+					
+
+						
+				}
+			}
+		
+	}
+	
 }
 
 void ship::debugprint() {
