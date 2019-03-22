@@ -74,7 +74,7 @@ int main() {
 			std::cout << "that is not an option" << std::endl;
 			break;
 		}
-		
+		std::cin >> input;
 		drawmenu();
 	}
 

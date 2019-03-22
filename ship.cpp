@@ -130,9 +130,21 @@ void ship::mergerooms() {
 					map[y][x] = ".";
 					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
 				}
+			}else
+			if (map[y][x] == ","  &&y > 0 && y < ysize) {
+				if (map[y + 1][x] == "|" && map[y - 1][x] == "|") {
+					map[y][x] = "|";
+					//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
+				}
 			}
+			else if (map[y][x] == ","&&x > 0 && x < xsize) {
+				if (map[y][x + 1] == "_"&&map[y][x - 1] == "_") {
 
-			if (map[y][x] == "d") {
+					map[y][x] = "_";
+					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
+				}
+			}else
+				if (map[y][x] == "d") {//removes doors
 				if (y == 0 || y==ysize-1) {// if the door is located on the left/right side of the map
 					map[y][x] = "_";
 					
@@ -406,6 +418,11 @@ void ship::generateHallways() {
 		
 	}
 	
+}
+
+void ship::fillrooms() {
+
+
 }
 
 void ship::debugprint() {
