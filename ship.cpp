@@ -188,6 +188,10 @@ void ship::generateHallways() {
 	bool scouting;
 	bool lredge;
 	bool tdedge;
+
+	int temp1 = 0;
+	int temp2 = 0;
+
 	for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
 		connecting = true;
 		x = rmdoors[i].x;
@@ -265,6 +269,7 @@ void ship::generateHallways() {
 								tdedge = true;
 								y++;
 								connecting = false;
+								temp2++;
 
 							}
 						}
@@ -306,6 +311,7 @@ void ship::generateHallways() {
 							else {
 								scouting = false;
 								lredge = true;
+								temp1++;
 								x--;
 								connecting = false;
 							}
@@ -350,6 +356,7 @@ void ship::generateHallways() {
 							else {
 								scouting = false;
 								tdedge = true;
+								temp2++;
 								y--;
 								connecting = false;
 							}
@@ -389,6 +396,7 @@ void ship::generateHallways() {
 							else {
 								scouting = false;
 								lredge = true;
+								temp1++;
 								x++;
 								connecting = false;
 							}
@@ -396,14 +404,14 @@ void ship::generateHallways() {
 						
 					}
 					else {//traces the object that it 
-					if (lredge) {//if the hallwalys run into the edge
-
-
-						}else
-					if (tdedge) {//if the hallwalys run into the edge
-
-
-					}
+						if (lredge) {//if the hallwalys run into the edge
+							//std::cout << "hallway hit left or right wall" << std::endl;
+							//temp1++;
+						}
+						else if (tdedge) {//if the hallwalys run into the edge
+							//std::cout << "hallway hit top or bottom wall" << std::endl;
+							//temp2++;
+						}
 						//map[y][x] = "H";
 						/*if ((map[y - 1][x] == "d" || map[y][x + 1] == "d" || map[y + 1][x] == "d" || map[y][x - 1] == "d") ||//checks for doors
 							(map[y - 1][x] == "H" || map[y][x + 1] == "H" || map[y + 1][x] == "H" || map[y][x - 1] == "H")) {//checks for hallways
@@ -415,9 +423,12 @@ void ship::generateHallways() {
 						
 				}
 			}
-		
-	}
 	
+
+	}
+
+	std::cout << temp2 << " hallway hit top or bottom wall" << std::endl;
+	std::cout << temp1 << " hallway hit left or right wall" << std::endl;
 }
 
 void ship::fillrooms() {
