@@ -9,6 +9,33 @@ struct dcor
 };
 
 
+class room {
+public:
+
+	room(int xl, int yl) {
+		x = xl;
+		y = yl;
+		rsize = 0;
+	}
+
+	std::vector<int>& getturns() { return turns; }
+
+	void setSize(int s) { rsize = s; }
+	int size() { return rsize; }
+	int getx() { return x; }
+	int gety() { return y; }
+private:
+	int rsize;
+	int x;
+	int y;
+	
+
+	std::vector<int> turns;
+	
+
+};
+
+
 class ship
 {
 public:
@@ -23,7 +50,7 @@ public:
 	void generateHallways();
 	void fillrooms();
 
-	bool detectRoom(int x, int y);
+	void detectRoom();
 
 	void setmaxroomsize(int x) { maxrs = x; }
 	void setminroomsize(int x) { minrs = x; }

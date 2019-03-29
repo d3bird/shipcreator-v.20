@@ -431,6 +431,15 @@ void ship::generateHallways() {
 	std::cout << temp1 << " hallway hit left or right wall" << std::endl;
 }
 
+
+void ship::detectRoom() {
+
+
+
+
+}
+
+
 void ship::fillrooms() {
 
 
