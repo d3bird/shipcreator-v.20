@@ -49,7 +49,9 @@ void ship::gen_blank_map() {//resets the entire map
 void ship::fillspace() {// fills the entire map with rooms
 	srand(time(NULL));
 	int stairlim = 3;
-	for (int f = 0; f < floorcount-1; f++) {
+	bool free = true;
+	int lasty = 0;
+	for (int f = 0; f < floorcount; f++) {
 
 		int roomsgenerated = 0;
 		int xloc = 0;
@@ -73,87 +75,97 @@ void ship::fillspace() {// fills the entire map with rooms
 				}
 
 			}// need a check to makesure that it does not overlap
-			else if (xloc + rmsize < xsize) {//there should be room to gen the room
-				doors = rand() % 4;
-				doors++;//makesure that rooms dont have zero doors
+			else {
+				
 
-				int mid = rmsize / 2;// gets the middle of the room to place the doors
-				for (int x = 0; x < rmsize; x++) {
-					for (int y = 0; y < rmsize; y++) {
-						if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1)) {
-							
-							if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
-								floor[f][yloc + y][xloc + x] = ",";
-								floor[f+1][yloc + y][xloc + x] = ",";
-							}
-							else {
-								floor[f][yloc + y][xloc + x] = ",";
-							}
-						}
-						else if (y == 0 || y == rmsize - 1) {
+				if (xloc + rmsize < xsize) {//there should be room to gen the room
+					doors = rand() % 4;
+					doors++;//makesure that rooms dont have zero doors
 
-							if (x == mid && doors > 0) {
-								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
-									floor[f][yloc + y][xloc + x] = "d";
-									floor[f+1][yloc + y][xloc + x] = "d";
+					int mid = rmsize / 2;// gets the middle of the room to place the doors
+					for (int x = 0; x < rmsize; x++) {
+						for (int y = 0; y < rmsize; y++) {
+
+							if (floor[f][yloc + y][xloc + x] == " ") {
+
+								if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1)) {
+
+									if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+										floor[f][yloc + y][xloc + x] = ",";
+										floor[f + 1][yloc + y][xloc + x] = ",";
+									}
+									else {
+										floor[f][yloc + y][xloc + x] = ",";
+									}
+								}
+								else if (y == 0 || y == rmsize - 1) {
+
+									if (x == mid && doors > 0) {
+										if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+											floor[f][yloc + y][xloc + x] = "d";
+											floor[f + 1][yloc + y][xloc + x] = "d";
+										}
+										else {
+											floor[f][yloc + y][xloc + x] = "d";
+										}
+										doors--;
+
+									}
+									else {
+										if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+											floor[f + 1][yloc + y][xloc + x] = "_";
+											floor[f][yloc + y][xloc + x] = "_";
+										}
+										else {
+											floor[f][yloc + y][xloc + x] = "_";
+										}
+									}
+
+								}
+								else if (x == 0 || x == rmsize - 1) {
+
+									if (y == mid && doors > 0) {
+										if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+											floor[f + 1][yloc + y][xloc + x] = "d";
+											floor[f][yloc + y][xloc + x] = "d";
+										}
+										else {
+											floor[f][yloc + y][xloc + x] = "d";
+
+										}
+										doors--;
+									}
+									else {
+										if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+											floor[f][yloc + y][xloc + x] = "|";
+											floor[f + 1][yloc + y][xloc + x] = "|";
+										}
+										else {
+											floor[f][yloc + y][xloc + x] = "|";
+										}
+									}
 								}
 								else {
-									floor[f][yloc + y][xloc + x] = "d";
+									if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
+										floor[f][yloc + y][xloc + x] = "s";
+										floor[f + 1][yloc + y][xloc + x] = "s";
+									}
+									else {
+										floor[f][yloc + y][xloc + x] = ".";
+									}
 								}
-								doors--;
 
-							}
-							else {
-								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
-									floor[f+1][yloc + y][xloc + x] = "_";
-									floor[f][yloc + y][xloc + x] = "_";
-								}
-								else {
-									floor[f][yloc + y][xloc + x] = "_";
-								}
 							}
 
 						}
-						else if (x == 0 || x == rmsize - 1) {
-
-							if (y == mid && doors > 0) {
-								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
-									floor[f+1][yloc + y][xloc + x] = "d";
-									floor[f][yloc + y][xloc + x] = "d";
-								}
-								else {
-									floor[f][yloc + y][xloc + x] = "d";
-									
-								}
-								doors--;
-							}
-							else {
-								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
-									floor[f][yloc + y][xloc + x] = "|";
-									floor[f+1][yloc + y][xloc + x] = "|";
-								}
-								else {
-									floor[f][yloc + y][xloc + x] = "|";
-								}
-							}
-						}
-						else {
-							if (rmsize <= stairlim && floorcount>1 && floorcount > f +1) {
-								floor[f][yloc + y][xloc + x] = "s";
-								floor[f+1][yloc + y][xloc + x] = "s";
-							}
-							else {
-								floor[f][yloc + y][xloc + x] = ".";
-							}
-						}
-
-
 					}
+					roomsgenerated++;
+					yloc += rmsize + 2;
 				}
-				roomsgenerated++;
-				yloc += rmsize + 2;
+				else {
+					yloc += lasty + 2;
+				}
 			}
-
 
 
 
