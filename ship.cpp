@@ -282,7 +282,7 @@ void ship::generateHallways() {
 	int temp1 = 0;
 	int temp2 = 0;
 
-	for (int f = 0; f < floorcount-1; f++) {
+	for (int f = 0; f < floorcount; f++) {
 
 		 temp1 = 0;
 		 temp2 = 0;
