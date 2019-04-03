@@ -128,7 +128,9 @@ void ship::fillspace() {// fills the entire map with rooms
 
 void ship::mergerooms() {
 	std::cout<<"merging rooms" << std::endl;
+	int doornumber = 0;
 	for (int f = 0; f < floorcount; f++) {
+		doornumber = 0;
 		for (int y = 0; y < ysize; y++) {
 			for (int x = 0; x < ysize; x++) {
 
@@ -179,7 +181,7 @@ void ship::mergerooms() {
 									dcor temp;
 									temp.x = x;
 									temp.y = y;
-
+									doornumber++;
 									rmdoors[f].push_back(temp);
 								}
 							}
@@ -189,6 +191,7 @@ void ship::mergerooms() {
 			}
 
 		}
+		std::cout << "doors on floor: " << f + 1 << " is " << doornumber << std::endl;
 	}
 	//map[0][0] = "a";
 	//std::cout << "rooms found: " << roomsfound << std::endl;
@@ -207,13 +210,14 @@ void ship::generateHallways() {
 	bool tdedge;
 	int temp1 = 0;
 	int temp2 = 0;
+
 	for (int f = 0; f < floorcount; f++) {
 
 		 temp1 = 0;
 		 temp2 = 0;
 
 
-		for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
+		for (int i = 0; i < rmdoors[f].size(); i++) {// run through all of the doors
 			connecting = true;
 			x = rmdoors[f][i].x;
 			y = rmdoors[f][i].y;
