@@ -51,17 +51,28 @@ void ship::fillspace() {// fills the entire map with rooms
 	int stairlim = 3;
 	bool free = true;
 	int lasty = 0;
+	int rmsize;// = rand() % maxrs + minrs;
+	int doors;
+
+	int roomsgenerated = 0;
+	int xloc = 0;
+	int yloc = 0;
+	bool creating = true;
+
+	int lastrow = -1;
+	int lastcol = -1;
+
 	for (int f = 0; f < floorcount; f++) {
 
-		int roomsgenerated = 0;
-		int xloc = 0;
-		int yloc = 0;
-		bool creating = true;
-		int rmsize;// = rand() % maxrs + minrs;
+		roomsgenerated = 0;
+		xloc = 0;
+		yloc = 0;
+		creating = true;
+		rmsize = -1;
+		doors = -1;
 
-		int doors;
-		int lastrow = -1;
-		int lastcol = -1;
+		lastrow = -1;
+		lastcol = -1;
 
 		while (creating) {// the loop for creating rooms till no more wll fit
 			rmsize = rand() % maxrs + minrs;//generates the size of the room
@@ -76,7 +87,7 @@ void ship::fillspace() {// fills the entire map with rooms
 
 			}// need a check to makesure that it does not overlap
 			else {
-				
+
 
 				if (xloc + rmsize < xsize) {//there should be room to gen the room
 					doors = rand() % 4;
@@ -452,7 +463,7 @@ void ship::generateHallways() {
 							else {
 								scouting = false;
 								tdedge = true;
-								temp2++;
+								//temp2++;
 								y--;
 								connecting = false;
 							}
@@ -492,7 +503,7 @@ void ship::generateHallways() {
 							else {
 								scouting = false;
 								lredge = true;
-								temp1++;
+								//temp1++;
 								x++;
 								connecting = false;
 							}
@@ -523,8 +534,8 @@ void ship::generateHallways() {
 
 		}
 	}
-	std::cout << temp2 << " hallway hit top or bottom wall" << std::endl;
-	std::cout << temp1 << " hallway hit left or right wall" << std::endl;
+	//std::cout << temp2 << " hallway hit top or bottom wall" << std::endl;
+	//std::cout << temp1 << " hallway hit left or right wall" << std::endl;
 }
 
 
