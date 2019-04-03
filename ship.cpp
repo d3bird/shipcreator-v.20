@@ -433,10 +433,170 @@ void ship::generateHallways() {
 
 
 void ship::detectRoom() {
+	int number = 0;
+	bool tracing;
+	bool add;
+	int oren; // the starting direction 1 right, 2 down, 3 left, 4 up
+	int tx;
+	int ty;
+	//go through the entire map
+	for (int y = 0; y < ysize; y++) {
+		for (int x = 0; x < xsize; x++) {
+
+			
+			if (map[y][x] == ",") {//if it finds a comma
+				if (x+1<xsize && (map[y][x + 1] == "_" || map[y][x + 1] == "d")) {//checks the spot to the right
+					if (y+1<ysize&& (map[y + 1][x] == "|" || map[y + 1][x] == "d")) {//checks the spot bellow the start
+						add = false;
+						tracing = true;
+						tx = x+1;
+						ty = y;
+						oren = 1;
+						while (tracing) {
+							switch (oren)
+							{
+							case 1://moving right
+								if (tx + 1 < xsize) {
+									if (map[ty][tx + 1] == ",") {//need to turn
+										tx++;
+										if (ty+1<ysize && map[ty + 1][tx] == "|") {
+											ty++;
+											oren = 2;
+										}
+										else if (ty - 1 > 0 &&map[ty - 1][tx] == "|") {
+											ty--;
+											oren = 4;
+										}
+										else if (tx + 1 < xsize&&map[ty][tx + 1] == "_") {
+											tx++;
+										}
+										else {
+											tracing = false;
+										}
+									}
+									
+									else {
+										tracing = false;
+									}
+								}
+								else {
+									tracing = false;
+								}
+								break;
+							case 2:// moving down
+								if (ty + 1 < ysize) {
+									if (map[ty + 1][tx]==",") {
+										ty++;
+										if (tx-1 >0 && map[ty][tx - 1] == "_") {
+											oren = 3;
+											tx--;
+										}
+										else if (ty + 1 < ysize&&map[ty + 1][tx] == "|") {
+											ty++;
+										}
+										else if (map[ty][tx++] == "_") {
+											tx++;
+											oren = 1;
+										}
+										else {
+											tracing = false;
+										}
 
 
+									}
+									else {
+										ty++;
+									}
+								}
+								else {
+									tracing = false;
+								}
+								break;
+							case 3:// moving left
+								if (tx - 1 >0) {
+									if (map[ty][tx - 1] == ",") {//need to turn
+										tx--;
+										if (map[ty - 1][tx] == "|") {
+											ty--;
+											oren = 4;
+										}
+										else if (map[ty + 1][tx] == "|") {
+											ty++;
+											oren = 2;
+										}
+										
+										else {
+											tracing = false;
+										}
+									}
+									else if (map[ty][tx - 1] == "_") {
+										tx--;
+									}
+									else {
+										tracing = false;
+									}
+								}
+								else {
+									tracing = false;
+								}
+								
+								break;
+							case 4:// moving up
+								if (ty - 1 >0) {
+									if (map[ty - 1][tx] == ",") {
+										ty--;
+										if (ty == y && tx == x) {
+											tracing = true;
+											add = true;
+										}else
+										 if (map[ty][tx + 1] == "_") {
+										tx++;
+										oren = 1;
+									}
+										if (map[ty][tx - 1] == "_") {
+											oren = 3;
+											tx--;
+										}
+										else if (map[ty - 1][tx] == "|") {
+											ty--;
+										}
+										
+										else {
+											tracing = false;
+										}
 
 
+									}
+									else {
+										ty--;
+									}
+								}
+								else {
+									tracing = false;
+								}
+								break;
+							default:
+								std::cout << "problem with orentation" << std::endl;
+								break;
+							}
+
+						}
+
+						if (add) {
+							number++;
+						}
+
+					}
+				}
+
+
+			}
+
+		}
+		
+	}
+
+	std::cout << "the number of rooms = " << number << std::endl;
 }
 
 

@@ -43,6 +43,7 @@ int main() {
 			s->mergerooms();
 			s->generateHallways();
 			s->print();
+		//	s->detectRoom();
 			delete s;
 			break;
 		case 2:
