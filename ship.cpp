@@ -10,6 +10,7 @@ ship::ship(int x, int y, int i) {
 	floorcount = i;
 	minrs = 3;
 	maxrs = 4;
+	grid = false;
 	floor.resize(i);//sets the floor size
 	rmdoors.resize(i);// sets the floor size for hallways gerneration
 	for (i = 0; i < floor.size(); i++) {
@@ -22,6 +23,30 @@ ship::ship(int x, int y, int i) {
 	std::cout << "generating blank map" << std::endl;
 	gen_blank_map();
 }
+
+ship::ship(int x, int y, int i, bool t) {
+
+	xsize = x;
+	ysize = y;
+	floorcount = i;
+	minrs = 3;
+	maxrs = 4;
+	grid = t;
+	floor.resize(i);//sets the floor size
+	rmdoors.resize(i);// sets the floor size for hallways gerneration
+	for (i = 0; i < floor.size(); i++) {
+
+		floor[i] = new std::string *[xsize];
+		for (x = 0; x < xsize; x++) {
+			floor[i][x] = new std::string[ysize];
+		}
+	}
+	std::cout << "generating blank map" << std::endl;
+	gen_blank_map();
+
+
+}
+
 
 ship::~ship() {
 	for (int i = 0; i < floor.size(); i++) {
@@ -44,6 +69,12 @@ void ship::gen_blank_map() {//resets the entire map
 }
 
 
+void ship::grid_fillspace() {
+
+
+
+
+}
 
 
 void ship::fillspace() {// fills the entire map with rooms
