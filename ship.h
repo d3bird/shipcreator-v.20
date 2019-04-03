@@ -14,6 +14,7 @@ public:
 
 	room(int xl, int yl) {
 		x = xl;
+		
 		y = yl;
 		rsize = 0;
 	}
@@ -28,18 +29,14 @@ private:
 	int rsize;
 	int x;
 	int y;
-	
-
 	std::vector<int> turns;
-	
-
 };
 
 
 class ship
 {
 public:
-	ship(int x, int y);
+	ship(int x, int y, int i);
 	~ship();
 
 	void gen_blank_map();
@@ -64,10 +61,11 @@ private:
 	int minrs;
 	int xsize;
 	int ysize;
+	int floorcount;
 	int roomnumber;
 	std::string ** map;
-
-	std::vector<dcor> rmdoors;
+	std::vector< std::string **> floor;
+	std::vector< std::vector<dcor> > rmdoors;
 	
 
 

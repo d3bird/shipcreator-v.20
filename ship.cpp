@@ -4,35 +4,43 @@
 #include <ctime>
 #include <string>
 
-ship::ship(int x, int y) { 
+ship::ship(int x, int y, int i) {
 	xsize = x;
 	ysize = y;
-
+	floorcount = i;
 	minrs = 3;
 	maxrs = 4;
+	floor.resize(i);//sets the floor size
+	rmdoors.resize(i);// sets the floor size for hallways gerneration
+	for (i = 0; i < floor.size(); i++) {
 
-	map = new std::string * [xsize];
-	for (x = 0; x < xsize; x++) {
-		map[x] = new std::string[ysize];
+		floor[i] = new std::string *[xsize];
+		for (x = 0; x < xsize; x++) {
+			floor[i][x] = new std::string[ysize];
+		}
 	}
+	std::cout << "generating blank map" << std::endl;
 	gen_blank_map();
 }
 
 ship::~ship() {
-	for (int x = 0; x < xsize; x++) {
-		delete [] map[x];
+	for (int i = 0; i < floor.size(); i++) {
+		for (int x = 0; x < xsize; x++) {
+			delete[] floor[i][x];
+		}
+		delete[] floor[i];
 	}
-	delete [] map;
 }
 
 void ship::gen_blank_map() {//resets the entire map
-	for (int i = 0; i < xsize; i++) {
-		for (int y = 0; y < ysize; y++) {
-			map[i][y] = " ";
-		}
-		
-	}
+	for (int i = 0; i < floor.size(); i++) {
+		for (int x = 0; x < xsize; x++) {
+			for (int y = 0; y < ysize; y++) {
+				floor[i][x][y] = " ";
+			}
 
+		}
+	}
 }
 
 
@@ -40,73 +48,79 @@ void ship::gen_blank_map() {//resets the entire map
 
 void ship::fillspace() {// fills the entire map with rooms
 	srand(time(NULL));
-	int roomsgenerated = 0;
-	int xloc = 0;
-	int yloc = 0;
-	bool creating = true;
-	int rmsize;// = rand() % maxrs + minrs;
-	
-	int doors;
-	int lastrow = -1;
-	int lastcol = -1;
 
-	while (creating) {// the loop for creating rooms till no more wll fit
-		rmsize = rand() % maxrs + minrs;//generates the size of the room
-		
-		if ((yloc + rmsize) >= ysize) {// at the very bottom and neets to move to the next row
-			xloc += 5;
-			yloc = 0;
-			if (xloc >= xsize) {// if the x axis runs out then it moves to the next x pos
-				creating = false;
-				std::cout << "ran out of space" << std::endl;
+	for (int f = 0; f < floorcount; f++) {
+
+		int roomsgenerated = 0;
+		int xloc = 0;
+		int yloc = 0;
+		bool creating = true;
+		int rmsize;// = rand() % maxrs + minrs;
+
+		int doors;
+		int lastrow = -1;
+		int lastcol = -1;
+
+		while (creating) {// the loop for creating rooms till no more wll fit
+			rmsize = rand() % maxrs + minrs;//generates the size of the room
+
+			if ((yloc + rmsize) >= ysize) {// at the very bottom and neets to move to the next row
+				xloc += 5;
+				yloc = 0;
+				if (xloc >= xsize) {// if the x axis runs out then it moves to the next x pos
+					creating = false;
+					std::cout << "ran out of space" << std::endl;
+				}
+
 			}
-			
-		}
-		else if(xloc+rmsize<xsize){//there should be room to gen the room
-			doors = rand() % 4;
-			doors++;//makesure that rooms dont have zero doors
-			
-			int mid = rmsize / 2;// gets the middle of the room to place the doors
-			for (int x = 0; x < rmsize; x++) {
-				for (int y = 0; y < rmsize; y++) {
-					if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1) ){
-						map[yloc + y][xloc+x] = ",";
-					}else if (y == 0 || y == rmsize-1){
+			else if (xloc + rmsize < xsize) {//there should be room to gen the room
+				doors = rand() % 4;
+				doors++;//makesure that rooms dont have zero doors
 
-						if (x == mid && doors>0) {
-							map[yloc + y][xloc + x] = "d";
-							doors--;
-							
+				int mid = rmsize / 2;// gets the middle of the room to place the doors
+				for (int x = 0; x < rmsize; x++) {
+					for (int y = 0; y < rmsize; y++) {
+						if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1)) {
+							floor[f][yloc + y][xloc + x] = ",";
+						}
+						else if (y == 0 || y == rmsize - 1) {
+
+							if (x == mid && doors > 0) {
+								floor[f][yloc + y][xloc + x] = "d";
+								doors--;
+
+							}
+							else {
+								floor[f][yloc + y][xloc + x] = "_";
+							}
+
+						}
+						else if (x == 0 || x == rmsize - 1) {
+
+							if (y == mid && doors > 0) {
+								floor[f][yloc + y][xloc + x] = "d";
+								doors--;
+
+							}
+							else {
+								floor[f][yloc + y][xloc + x] = "|";
+							}
 						}
 						else {
-							map[yloc + y][xloc + x] = "_";
+							floor[f][yloc + y][xloc + x] = ".";
 						}
 
-					}
-					else if (x == 0 || x == rmsize - 1) {
 
-						if (y == mid && doors > 0) {
-							map[yloc + y][xloc + x] = "d";
-							doors--;
-							
-						}else {
-						map[yloc + y][xloc + x] = "|";
 					}
-					}
-					else {
-						map[yloc + y][xloc + x] = ".";
-					}
-	
-
 				}
+				roomsgenerated++;
+				yloc += rmsize + 2;
 			}
-			roomsgenerated++;
-			yloc += rmsize+2;
+
+
+
+
 		}
-
-
-
-
 	}
 	//std::cout << "rooms generated: " << roomsgenerated << std::endl;
 }
@@ -114,64 +128,67 @@ void ship::fillspace() {// fills the entire map with rooms
 
 void ship::mergerooms() {
 	std::cout<<"merging rooms" << std::endl;
+	for (int f = 0; f < floorcount; f++) {
+		for (int y = 0; y < ysize; y++) {
+			for (int x = 0; x < ysize; x++) {
 
-	for (int y = 0; y < ysize; y++) {
-		for (int x = 0; x < ysize; x++) {
-			
-			if (map[y][x] == "_"  &&y>0 && y<ysize) {
-				if (map[y + 1][x] == "." && map[y - 1][x] == ".") {
-					map[y][x] = ".";
-					//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
-				}
-			}
-			else if (map[y][x] == "|"&&x>0&&x<xsize) {
-				if (map[y][x + 1] == "."&&map[y][x - 1] == ".") {
-					
-					map[y][x] = ".";
-					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
-				}
-			}else
-			if (map[y][x] == ","  &&y > 0 && y < ysize) {
-				if (map[y + 1][x] == "|" && map[y - 1][x] == "|") {
-					map[y][x] = "|";
-					//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
-				}
-			}
-			else if (map[y][x] == ","&&x > 0 && x < xsize) {
-				if (map[y][x + 1] == "_"&&map[y][x - 1] == "_") {
-
-					map[y][x] = "_";
-					//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
-				}
-			}else
-				if (map[y][x] == "d") {//removes doors
-				if (y == 0 || y==ysize-1) {// if the door is located on the left/right side of the map
-					map[y][x] = "_";
-					
-				}
-				else if (x == 0 || x == xsize - 1) {//if the door is located ont the top/bottom of the map
-					map[y][x] = "|";
-					
-				}
-				else if ((map[y][x+1]=="."&&map[y][x-1]==".") || (map[y+1][x]=="."&&map[y-1][x]==".")) {
-					map[y][x] = ".";
-					
-				}
-				else {
-					//only add doors that have areas to connect to other doors/hallways
-					if (map[y - 1][x] == " " || map[y][x + 1] == " " || map[y + 1][x] == " " || map[y][x - 1] == " ") {
-						dcor temp;
-						temp.x = x;
-						temp.y = y;
-
-						rmdoors.push_back(temp);
+				if (floor[f][y][x] == "_"  &&y > 0 && y < ysize) {
+					if (floor[f][y + 1][x] == "." && floor[f][y - 1][x] == ".") {
+						floor[f][y][x] = ".";
+						//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
 					}
 				}
+				else if (floor[f][y][x] == "|"&&x > 0 && x < xsize) {
+					if (floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") {
+
+						floor[f][y][x] = ".";
+						//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
+					}
+				}
+				else
+					if (floor[f][y][x] == ","  &&y > 0 && y < ysize) {
+						if (floor[f][y + 1][x] == "|" && floor[f][y - 1][x] == "|") {
+							floor[f][y][x] = "|";
+							//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
+						}
+					}
+					else if (floor[f][y][x] == ","&&x > 0 && x < xsize) {
+						if (floor[f][y][x + 1] == "_"&&floor[f][y][x - 1] == "_") {
+
+							floor[f][y][x] = "_";
+							//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
+						}
+					}
+					else
+						if (floor[f][y][x] == "d") {//removes doors
+							if (y == 0 || y == ysize - 1) {// if the door is located on the left/right side of the map
+								floor[f][y][x] = "_";
+
+							}
+							else if (x == 0 || x == xsize - 1) {//if the door is located ont the top/bottom of the map
+								floor[f][y][x] = "|";
+
+							}
+							else if ((floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") || (floor[f][y + 1][x] == "."&&floor[f][y - 1][x] == ".")) {
+								floor[f][y][x] = ".";
+
+							}
+							else {
+								//only add doors that have areas to connect to other doors/hallways
+								if (floor[f][y - 1][x] == " " || floor[f][y][x + 1] == " " || floor[f][y + 1][x] == " " || floor[f][y][x - 1] == " ") {
+									dcor temp;
+									temp.x = x;
+									temp.y = y;
+
+									rmdoors[f].push_back(temp);
+								}
+							}
+
+						}
 
 			}
 
 		}
-
 	}
 	//map[0][0] = "a";
 	//std::cout << "rooms found: " << roomsfound << std::endl;
@@ -188,19 +205,23 @@ void ship::generateHallways() {
 	bool scouting;
 	bool lredge;
 	bool tdedge;
-
 	int temp1 = 0;
 	int temp2 = 0;
+	for (int f = 0; f < floorcount; f++) {
 
-	for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
-		connecting = true;
-		x = rmdoors[i].x;
-		y = rmdoors[i].y;
-		
+		 temp1 = 0;
+		 temp2 = 0;
+
+
+		for (int i = 0; i < rmdoors.size(); i++) {// run through all of the doors
+			connecting = true;
+			x = rmdoors[f][i].x;
+			y = rmdoors[f][i].y;
+
 
 			//chcking to see if it is connected to the hallway
-			if (map[y][x + 1] != "H"  && map[y + 1][x] != "H"
-				&& map[y][x - 1] != "H" && map[y - 1][x] != "H") {
+			if (floor[f][y][x + 1] != "H"  && floor[f][y + 1][x] != "H"
+				&& floor[f][y][x - 1] != "H" && floor[f][y - 1][x] != "H") {
 
 				//check to see were to place the hallway
 				n = false;
@@ -209,55 +230,55 @@ void ship::generateHallways() {
 				w = false;
 				tdedge = false;
 				lredge = false;
-				if (map[y - 1][x] == " ") {//picks the starting direction
+				if (floor[f][y - 1][x] == " ") {//picks the starting direction
 					n = true;
 				}
-				else if (map[y][x + 1] == " ") {
+				else if (floor[f][y][x + 1] == " ") {
 					e = true;
 				}
-				else if (map[y + 1][x] == " ") {
+				else if (floor[f][y + 1][x] == " ") {
 					s = true;
 				}
-				else if (map[y][x - 1] == " ") {
+				else if (floor[f][y][x - 1] == " ") {
 					w = true;
 				}
 
-				 scouting = true;
+				scouting = true;
 
 				while (connecting) {// connecting it to to the hallway/another door only moving one block per cycle
-				
+
 					if (scouting) {//moving streight untill it hits a wall/object
 						if (n) {//going north
 							y--;
 							if (y >= 0) {
-								if (map[y][x] == " ") {//if it is empty then add a hallway
-									map[y][x] = "H";
+								if (floor[f][y][x] == " ") {//if it is empty then add a hallway
+									floor[f][y][x] = "H";
 
 									//check to see if the soundings are a door/hallway
 
-									if (y - 1 >= 0 && y+1<ysize) {
-										if (map[y - 1][x] == "H" || map[y][x - 1] == "H" || map[y - 1][x] == "d" || map[y][x - 1] == "d") {
+									if (y - 1 >= 0 && y + 1 < ysize) {
+										if (floor[f][y - 1][x] == "H" || floor[f][y][x - 1] == "H" || floor[f][y - 1][x] == "d" || floor[f][y][x - 1] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
 
-									if (x - 1 >= 0 && x+1 < xsize) {
-										if (map[y][x + 1] == "H" || map[y][x + 1] == "d") {
+									if (x - 1 >= 0 && x + 1 < xsize) {
+										if (floor[f][y][x + 1] == "H" || floor[f][y][x + 1] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
-																		
-									
+
+
 								}
-								else if (map[y][x] == "_" || map[y][x] == "|") {
-									map[y][x] = "d";
+								else if (floor[f][y][x] == "_" || floor[f][y][x] == "|") {
+									floor[f][y][x] = "d";
 									scouting = false;
 									connecting = false;
 								}
 								else {//if not then the it will trace the room
-								
+
 									scouting = false;
 									y++;
 									connecting = false;
@@ -276,29 +297,29 @@ void ship::generateHallways() {
 						else if (e) {//going east
 							x++;
 							if (x < xsize) {
-								if (map[y][x] == " ") {//if it is empty then add a hallway
-									map[y][x] = "H";
+								if (floor[f][y][x] == " ") {//if it is empty then add a hallway
+									floor[f][y][x] = "H";
 
 									//check to see if the soundings are a door/hallway
 
 									if (y - 1 >= 0 && y + 1 < ysize) {
-										if ((map[y - 1][x] == "H" || map[y + 1][x] == "H") ||
-											(map[y - 1][x] == "d" || map[y + 1][x] == "d")) {
+										if ((floor[f][y - 1][x] == "H" || floor[f][y + 1][x] == "H") ||
+											(floor[f][y - 1][x] == "d" || floor[f][y + 1][x] == "d")) {
 											scouting = false;
 											connecting = false;
 										}
 									}
 									if (x - 1 >= 0 && x + 1 < xsize) {
-										if (map[y][x + 1] == "H" || map[y][x + 1] == "d") {
+										if (floor[f][y][x + 1] == "H" || floor[f][y][x + 1] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
-									
+
 
 								}
-								else if (map[y][x] == "_" || map[y][x] == "|") {
-									map[y][x] = "d";
+								else if (floor[f][y][x] == "_" || floor[f][y][x] == "|") {
+									floor[f][y][x] = "d";
 									scouting = false;
 									connecting = false;
 								}
@@ -320,30 +341,30 @@ void ship::generateHallways() {
 						else if (s) {//going south
 							y++;
 							if (y < ysize) {
-								if (map[y][x] == " ") {//if it is empty then add a hallway
-									map[y][x] = "H";
+								if (floor[f][y][x] == " ") {//if it is empty then add a hallway
+									floor[f][y][x] = "H";
 
 									//check to see if the soundings are a door/hallway
 
 									if (y - 1 >= 0 && y + 1 < ysize) {
-										if (map[y + 1][x] == "H" || map[y + 1][x] == "d") {
+										if (floor[f][y + 1][x] == "H" || floor[f][y + 1][x] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
 
 									if (x - 1 >= 0 && x + 1 < xsize) {
-										if ((map[y][x + 1] == "H" || map[y][x - 1] == "H") ||
-											(map[y][x + 1] == "d" || map[y][x - 1] == "d")) {
+										if ((floor[f][y][x + 1] == "H" || floor[f][y][x - 1] == "H") ||
+											(floor[f][y][x + 1] == "d" || floor[f][y][x - 1] == "d")) {
 											scouting = false;
 											connecting = false;
 										}
 									}
-									
+
 
 								}
-								else if (map[y][x] == "_" || map[y][x] == "|") {
-									map[y][x] = "d";
+								else if (floor[f][y][x] == "_" || floor[f][y][x] == "|") {
+									floor[f][y][x] = "d";
 									scouting = false;
 									connecting = false;
 								}
@@ -364,26 +385,26 @@ void ship::generateHallways() {
 						else if (w) {//going west
 							x--;
 							if (x >= 0) {
-								if (map[y][x] == " ") {//if it is empty then add a hallway
-									map[y][x] = "H";
+								if (floor[f][y][x] == " ") {//if it is empty then add a hallway
+									floor[f][y][x] = "H";
 									//check to see if the soundings are a door/hallway
 									if (y - 1 >= 0 && y + 1 < ysize) {
-										if (map[y + 1][x] == "H" || map[y + 1][x] == "d"|| map[y - 1][x] == "H" || map[y - 1][x] == "d") {
+										if (floor[f][y + 1][x] == "H" || floor[f][y + 1][x] == "d" || floor[f][y - 1][x] == "H" || floor[f][y - 1][x] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
 
 									if (x - 1 >= 0 && x + 1 < xsize) {
-										if ((map[y][x - 1] == "H") || map[y][x - 1] == "d") {
+										if ((floor[f][y][x - 1] == "H") || floor[f][y][x - 1] == "d") {
 											scouting = false;
 											connecting = false;
 										}
 									}
-									
+
 								}
-								else if (map[y][x] == "_" || map[y][x] == "|") {
-									map[y][x] = "d";
+								else if (floor[f][y][x] == "_" || floor[f][y][x] == "|") {
+									floor[f][y][x] = "d";
 									scouting = false;
 									connecting = false;
 								}
@@ -401,7 +422,7 @@ void ship::generateHallways() {
 								connecting = false;
 							}
 						}
-						
+
 					}
 					else {//traces the object that it 
 						if (lredge) {//if the hallwalys run into the edge
@@ -418,15 +439,15 @@ void ship::generateHallways() {
 							connecting = false;
 						}*/
 					}
-					
 
-						
+
+
 				}
 			}
-	
 
+
+		}
 	}
-
 	std::cout << temp2 << " hallway hit top or bottom wall" << std::endl;
 	std::cout << temp1 << " hallway hit left or right wall" << std::endl;
 }
@@ -439,14 +460,17 @@ void ship::detectRoom() {
 	int oren; // the starting direction 1 right, 2 down, 3 left, 4 up
 	int tx;
 	int ty;
+
+	
+
 	//go through the entire map
 	for (int y = 0; y < ysize; y++) {
 		for (int x = 0; x < xsize; x++) {
 
 			
-			if (map[y][x] == ",") {//if it finds a comma
-				if (x+1<xsize && (map[y][x + 1] == "_" || map[y][x + 1] == "d")) {//checks the spot to the right
-					if (y+1<ysize&& (map[y + 1][x] == "|" || map[y + 1][x] == "d")) {//checks the spot bellow the start
+			if (floor[0][y][x] == ",") {//if it finds a comma
+				if (x+1<xsize && (floor[0][y][x + 1] == "_" || floor[0][y][x + 1] == "d")) {//checks the spot to the right
+					if (y+1<ysize&& (floor[0][y + 1][x] == "|" || floor[0][y + 1][x] == "d")) {//checks the spot bellow the start
 						add = false;
 						tracing = true;
 						tx = x+1;
@@ -457,17 +481,17 @@ void ship::detectRoom() {
 							{
 							case 1://moving right
 								if (tx + 1 < xsize) {
-									if (map[ty][tx + 1] == ",") {//need to turn
+									if (floor[0][ty][tx + 1] == ",") {//need to turn
 										tx++;
-										if (ty+1<ysize && map[ty + 1][tx] == "|") {
+										if (ty+1<ysize && floor[0][ty + 1][tx] == "|") {
 											ty++;
 											oren = 2;
 										}
-										else if (ty - 1 > 0 &&map[ty - 1][tx] == "|") {
+										else if (ty - 1 > 0 && floor[0][ty - 1][tx] == "|") {
 											ty--;
 											oren = 4;
 										}
-										else if (tx + 1 < xsize&&map[ty][tx + 1] == "_") {
+										else if (tx + 1 < xsize&&floor[0][ty][tx + 1] == "_") {
 											tx++;
 										}
 										else {
@@ -485,16 +509,16 @@ void ship::detectRoom() {
 								break;
 							case 2:// moving down
 								if (ty + 1 < ysize) {
-									if (map[ty + 1][tx]==",") {
+									if (floor[0][ty + 1][tx]==",") {
 										ty++;
-										if (tx-1 >0 && map[ty][tx - 1] == "_") {
+										if (tx-1 >0 && floor[0][ty][tx - 1] == "_") {
 											oren = 3;
 											tx--;
 										}
-										else if (ty + 1 < ysize&&map[ty + 1][tx] == "|") {
+										else if (ty + 1 < ysize&&floor[0][ty + 1][tx] == "|") {
 											ty++;
 										}
-										else if (map[ty][tx++] == "_") {
+										else if (floor[0][ty][tx++] == "_") {
 											tx++;
 											oren = 1;
 										}
@@ -514,13 +538,13 @@ void ship::detectRoom() {
 								break;
 							case 3:// moving left
 								if (tx - 1 >0) {
-									if (map[ty][tx - 1] == ",") {//need to turn
+									if (floor[0][ty][tx - 1] == ",") {//need to turn
 										tx--;
-										if (map[ty - 1][tx] == "|") {
+										if (floor[0][ty - 1][tx] == "|") {
 											ty--;
 											oren = 4;
 										}
-										else if (map[ty + 1][tx] == "|") {
+										else if (floor[0][ty + 1][tx] == "|") {
 											ty++;
 											oren = 2;
 										}
@@ -529,7 +553,7 @@ void ship::detectRoom() {
 											tracing = false;
 										}
 									}
-									else if (map[ty][tx - 1] == "_") {
+									else if (floor[0][ty][tx - 1] == "_") {
 										tx--;
 									}
 									else {
@@ -543,21 +567,21 @@ void ship::detectRoom() {
 								break;
 							case 4:// moving up
 								if (ty - 1 >0) {
-									if (map[ty - 1][tx] == ",") {
+									if (floor[0][ty - 1][tx] == ",") {
 										ty--;
 										if (ty == y && tx == x) {
 											tracing = true;
 											add = true;
 										}else
-										 if (map[ty][tx + 1] == "_") {
+										 if (floor[0][ty][tx + 1] == "_") {
 										tx++;
 										oren = 1;
 									}
-										if (map[ty][tx - 1] == "_") {
+										if (floor[0][ty][tx - 1] == "_") {
 											oren = 3;
 											tx--;
 										}
-										else if (map[ty - 1][tx] == "|") {
+										else if (floor[0][ty - 1][tx] == "|") {
 											ty--;
 										}
 										
@@ -621,7 +645,7 @@ void ship::debugprint() {
 				}
 			}
 			else {
-				std::cout << map[i][y];
+				std::cout << floor[0][i][y];
 			}
 		}
 		std::cout << std::endl;
@@ -631,12 +655,15 @@ void ship::debugprint() {
 
 void ship::print() {
 
-	for (int i = 0; i < xsize; i++) {
-		for (int y = 0; y < ysize; y++) {
-			
-			std::cout << map[i][y];
-		}
-		std::cout<< std::endl;
-	}
+	for (int i = 0; i < floor.size(); i++) {
+		std::cout << "floor #: " << i + 1 << std::endl;
+		for (int x = 0; x < xsize; x++) {
+			for (int y = 0; y < ysize; y++) {
 
+				std::cout << floor[i][x][y];
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
 }

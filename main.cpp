@@ -25,7 +25,7 @@ int main() {
 	drawmenu();
 	int xsize;
 	int ysize;
-	
+	int floorcount;
 	int input = -1;
 
 	ship *s;
@@ -38,10 +38,19 @@ int main() {
 			std::cout << "input max width, then max height" << std::endl;
 			std::cin >> xsize;
 			std::cin >> ysize;
-			s =new ship(xsize, ysize);
+			std::cout << "how many floors do you want" << std::endl;
+			std::cin >> floorcount;
+			if (floorcount <= 0) {
+				floorcount = 1;
+			}
+			s =new ship(xsize, ysize, floorcount);
+			std::cout << "filling space" << std::endl;
 			s->fillspace();
+			std::cout << "merging rooms" << std::endl;
 			s->mergerooms();
+			std::cout << "generating hallways" << std::endl;
 			s->generateHallways();
+			std::cout << "printing" << std::endl;
 			s->print();
 		//	s->detectRoom();
 			delete s;
