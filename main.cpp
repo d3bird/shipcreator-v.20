@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include "ship.h"
 
+void printKey() {
+	std::cout << ". = space in the room" << std::endl;
+	std::cout << ", = corner" << std::endl;
+	std::cout << "d = door/hidden door" << std::endl;
+	std::cout << "| = wall " << std::endl;
+	std::cout << "_ = wall" << std::endl;
+	std::cout << "H = hallway" << std::endl;
+	std::cout << "s stair case to floor right above or below" << std::endl;
+
+}
+
 void drawmenu() {
 	system("cls");
 	std::cout << "type in what you want to do" << std::endl;
@@ -52,6 +63,7 @@ int main() {
 			s->generateHallways();
 			std::cout << "printing" << std::endl;
 			s->print();
+			printKey();
 		//	s->detectRoom();
 			delete s;
 			break;
@@ -76,6 +88,7 @@ int main() {
 		case 11:
 			break;
 		case 12:
+			running = false;
 			break;
 		case 13:
 			break;
@@ -84,8 +97,10 @@ int main() {
 			std::cout << "that is not an option" << std::endl;
 			break;
 		}
-		std::cin >> input;
-		drawmenu();
+		if (running) {
+			std::cin >> input;
+			drawmenu();
+		}
 	}
 
 
