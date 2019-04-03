@@ -86,7 +86,7 @@ void ship::fillspace() {// fills the entire map with rooms
 					for (int x = 0; x < rmsize; x++) {
 						for (int y = 0; y < rmsize; y++) {
 
-							if (floor[f][yloc + y][xloc + x] == " ") {
+							if ((floor[f][yloc + y][xloc + x] != "s")) {
 
 								if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1)) {
 
@@ -184,27 +184,42 @@ void ship::mergerooms() {
 			for (int x = 0; x < ysize; x++) {
 
 				if (floor[f][y][x] == "_"  &&y > 0 && y < ysize) {
-					if (floor[f][y + 1][x] == "." && floor[f][y - 1][x] == ".") {
+					if ((floor[f][y + 1][x] == "." && floor[f][y - 1][x] == ".") ||
+						(floor[f][y + 1][x] == "s" && floor[f][y - 1][x] == "_") || (floor[f][y + 1][x] == "_" && floor[f][y - 1][x] == "s")
+						){
 						floor[f][y][x] = ".";
 						//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
 					}
 				}
 				else if (floor[f][y][x] == "|"&&x > 0 && x < xsize) {
-					if (floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") {
+					if ((floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") || //removes wall between rooms
+						(floor[f][y][x + 1] == "s"&&floor[f][y][x - 1] == "|") || (floor[f][y][x + 1] == "|"&&floor[f][y][x - 1] == "s") //removes extra wall
+						){
 
 						floor[f][y][x] = ".";
 						//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
 					}
+					else if ((floor[f][y][x + 1] == "_"&&floor[f][y][x - 1] == ".") || (floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == "_")) {// replaces with corner
+						floor[f][y][x] = ",";
+					}
+
+
 				}
 				else
 					if (floor[f][y][x] == ","  &&y > 0 && y < ysize) {
-						if (floor[f][y + 1][x] == "|" && floor[f][y - 1][x] == "|") {
+						if ((floor[f][y + 1][x] == "|" && floor[f][y - 1][x] == "|") || (floor[f][y + 1][x] == "d" && floor[f][y - 1][x] == "d") ||
+							(floor[f][y + 1][x] == "|" && floor[f][y - 1][x] == ",") || (floor[f][y + 1][x] == "," && floor[f][y - 1][x] == "|") ||
+							(floor[f][y + 1][x] == "," && floor[f][y - 1][x] == "d") || (floor[f][y + 1][x] == "d" && floor[f][y - 1][x] == ",")
+							) {
 							floor[f][y][x] = "|";
 							//std::cout << "merging " << map[y][x] << " @ " << x << "," << y << std::endl;
 						}
 					}
 					else if (floor[f][y][x] == ","&&x > 0 && x < xsize) {
-						if (floor[f][y][x + 1] == "_"&&floor[f][y][x - 1] == "_") {
+						if ((floor[f][y][x + 1] == "_"&&floor[f][y][x - 1] == "_") || (floor[f][y][x + 1] == "d"&&floor[f][y][x - 1] == "d") ||
+							(floor[f][y][x + 1] == ","&&floor[f][y][x - 1] == "_") || (floor[f][y][x + 1] == "_"&&floor[f][y][x - 1] == ",")
+							
+							) {
 
 							floor[f][y][x] = "_";
 							//std::cout << "merging "<< map[y][x ]<<" @ "<<x<<","<<y << std::endl;
@@ -220,7 +235,14 @@ void ship::mergerooms() {
 								floor[f][y][x] = "|";
 
 							}
-							else if ((floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") || (floor[f][y + 1][x] == "."&&floor[f][y - 1][x] == ".")) {
+							else if ((floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == ".") || (floor[f][y + 1][x] == "."&&floor[f][y - 1][x] == ".") ||
+								(floor[f][y + 1][x] == "s"&&floor[f][y - 1][x] == ".") || (floor[f][y + 1][x] == "."&&floor[f][y - 1][x] == "s") ||
+								(floor[f][y + 1][x] == "s"&&floor[f][y - 1][x] == "d") || (floor[f][y + 1][x] == "d"&&floor[f][y - 1][x] == "s")||
+								(floor[f][y][x + 1] == "."&&floor[f][y][x - 1] == "s") || (floor[f][y][x + 1] == "s"&&floor[f][y][x - 1] == ".") ||
+								(floor[f][y][x + 1] == "d") || (floor[f][y][x - 1] == "d") || (floor[f][y+1][x] == "d") || (floor[f][y - 1][x] == "d") //removes double doors
+								
+								
+								) {
 								floor[f][y][x] = ".";
 
 							}
