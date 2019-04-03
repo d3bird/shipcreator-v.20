@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ship.h"
 
+//prints after the map has printed
 void printKey() {
 	std::cout << ". = space in the room" << std::endl;
 	std::cout << ", = corner" << std::endl;
@@ -13,6 +14,7 @@ void printKey() {
 
 }
 
+//draws the menu for each of the different keys do
 void drawmenu() {
 	system("cls");
 	std::cout << "type in what you want to do" << std::endl;
@@ -31,6 +33,8 @@ void drawmenu() {
 
 }
 
+
+// the main run loop allowing the user to input multiple commands to gen multiple ships
 int main() {
 	bool running = true;
 	drawmenu();

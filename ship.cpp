@@ -4,6 +4,7 @@
 #include <ctime>
 #include <string>
 
+//constructor for the ship
 ship::ship(int x, int y, int i) {
 	xsize = x;
 	ysize = y;
@@ -23,6 +24,7 @@ ship::ship(int x, int y, int i) {
 	gen_blank_map();
 }
 
+//deconstructor for the ship
 ship::~ship() {
 	for (int i = 0; i < floor.size(); i++) {
 		for (int x = 0; x < xsize; x++) {
@@ -32,7 +34,9 @@ ship::~ship() {
 	}
 }
 
-void ship::gen_blank_map() {//resets the entire map
+
+//intilises all of the floors strings to " " 
+void ship::gen_blank_map() {
 	for (int i = 0; i < floor.size(); i++) {
 		for (int x = 0; x < xsize; x++) {
 			for (int y = 0; y < ysize; y++) {
@@ -45,8 +49,8 @@ void ship::gen_blank_map() {//resets the entire map
 
 
 
-
-void ship::fillspace() {// fills the entire map with rooms
+//fills the entire ship with randomly generated rooms
+void ship::fillspace() {
 	srand(time(NULL));
 	int stairlim = 3;
 	bool free = true;
@@ -185,7 +189,7 @@ void ship::fillspace() {// fills the entire map with rooms
 	//std::cout << "rooms generated: " << roomsgenerated << std::endl;
 }
 
-
+//merges rooms that are next to each other and cleans up generation mistakes
 void ship::mergerooms() {
 	std::cout<<"merging rooms" << std::endl;
 	int doornumber = 0;
@@ -279,6 +283,7 @@ void ship::mergerooms() {
 	//std::cout << "rooms found: " << roomsfound << std::endl;
 }
 
+//generating hallways from each door location
 void ship::generateHallways() {
 	bool connecting;
 	int x;
@@ -538,7 +543,7 @@ void ship::generateHallways() {
 	//std::cout << temp1 << " hallway hit left or right wall" << std::endl;
 }
 
-
+//detects the rooms, still not working
 void ship::detectRoom() {
 	int number = 0;
 	bool tracing;
@@ -709,12 +714,13 @@ void ship::detectRoom() {
 	std::cout << "the number of rooms = " << number << std::endl;
 }
 
-
+// fills all of the rooms with things
 void ship::fillrooms() {
 
 
 }
 
+//prints the ship grid with numbers of location
 void ship::debugprint() {
 
 	for (int i = -1; i < xsize; i++) {
@@ -738,7 +744,7 @@ void ship::debugprint() {
 	}
 
 }
-
+//prints each floor of the ship
 void ship::print() {
 
 	for (int i = 0; i < floor.size(); i++) {
