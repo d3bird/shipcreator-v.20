@@ -48,8 +48,8 @@ void ship::gen_blank_map() {//resets the entire map
 
 void ship::fillspace() {// fills the entire map with rooms
 	srand(time(NULL));
-
-	for (int f = 0; f < floorcount; f++) {
+	int stairlim = 3;
+	for (int f = 0; f < floorcount-1; f++) {
 
 		int roomsgenerated = 0;
 		int xloc = 0;
@@ -72,7 +72,7 @@ void ship::fillspace() {// fills the entire map with rooms
 					std::cout << "ran out of space" << std::endl;
 				}
 
-			}
+			}// need a check to makesure that it does not overlap
 			else if (xloc + rmsize < xsize) {//there should be room to gen the room
 				doors = rand() % 4;
 				doors++;//makesure that rooms dont have zero doors
@@ -81,7 +81,8 @@ void ship::fillspace() {// fills the entire map with rooms
 				for (int x = 0; x < rmsize; x++) {
 					for (int y = 0; y < rmsize; y++) {
 						if ((y == 0 && x == 0) || (y == 0 && x == rmsize - 1) || (y == rmsize - 1 && x == 0) || (y == rmsize - 1 && x == rmsize - 1)) {
-							if (rmsize <= 2 && floorcount > 1 && floorcount > f + 1) {
+							
+							if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
 								floor[f][yloc + y][xloc + x] = ",";
 								floor[f+1][yloc + y][xloc + x] = ",";
 							}
@@ -92,7 +93,7 @@ void ship::fillspace() {// fills the entire map with rooms
 						else if (y == 0 || y == rmsize - 1) {
 
 							if (x == mid && doors > 0) {
-								if (rmsize <= 2 && floorcount > 1 && floorcount > f + 1) {
+								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
 									floor[f][yloc + y][xloc + x] = "d";
 									floor[f+1][yloc + y][xloc + x] = "d";
 								}
@@ -103,7 +104,7 @@ void ship::fillspace() {// fills the entire map with rooms
 
 							}
 							else {
-								if (rmsize <= 2 && floorcount > 1 && floorcount > f + 1) {
+								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
 									floor[f+1][yloc + y][xloc + x] = "_";
 									floor[f][yloc + y][xloc + x] = "_";
 								}
@@ -116,7 +117,7 @@ void ship::fillspace() {// fills the entire map with rooms
 						else if (x == 0 || x == rmsize - 1) {
 
 							if (y == mid && doors > 0) {
-								if (rmsize <= 2 && floorcount > 1 && floorcount > f + 1) {
+								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
 									floor[f+1][yloc + y][xloc + x] = "d";
 									floor[f][yloc + y][xloc + x] = "d";
 								}
@@ -127,7 +128,7 @@ void ship::fillspace() {// fills the entire map with rooms
 								doors--;
 							}
 							else {
-								if (rmsize <= 2 && floorcount > 1 && floorcount > f + 1) {
+								if (rmsize <= stairlim && floorcount > 1 && floorcount > f + 1) {
 									floor[f][yloc + y][xloc + x] = "|";
 									floor[f+1][yloc + y][xloc + x] = "|";
 								}
@@ -137,7 +138,7 @@ void ship::fillspace() {// fills the entire map with rooms
 							}
 						}
 						else {
-							if (rmsize <= 2 && floorcount>1 && floorcount > f +1) {
+							if (rmsize <= stairlim && floorcount>1 && floorcount > f +1) {
 								floor[f][yloc + y][xloc + x] = "s";
 								floor[f+1][yloc + y][xloc + x] = "s";
 							}
@@ -247,7 +248,7 @@ void ship::generateHallways() {
 	int temp1 = 0;
 	int temp2 = 0;
 
-	for (int f = 0; f < floorcount; f++) {
+	for (int f = 0; f < floorcount-1; f++) {
 
 		 temp1 = 0;
 		 temp2 = 0;
