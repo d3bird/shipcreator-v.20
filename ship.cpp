@@ -75,29 +75,29 @@ void ship::grid_hallways() {
 		//int ymid = ysize / 2;
 		for (int f = 0; f < floorcount; f++) {
 			for (int y = 0; y < ysize; y += halldist) {
-				for (int x = 0; x < xsize; x ++) {
+				for (int x = 0; x < xsize; x++) {
 					floor[f][y][x] = "H";
 				}
 			}
 
-			for (int y = 0; y < ysize; y ++) {
-				for (int x = 0; x < xsize; x+= halldist) {
+			for (int y = 0; y < ysize; y++) {
+				for (int x = 0; x < xsize; x += halldist) {
 					floor[f][y][x] = "H";
 				}
 			}
 
 			for (int y = 0; y < ysize; y += halldist) {
 				for (int x = 0; x < xsize; x += halldist) {
-					if ((y != 0 && x != 0) && (y != ysize-1&& x != xsize-1)) {
+					if ((y != 0 && x != 0) && (y != ysize - 1 && x != xsize - 1)) {
 						floor[f][y][x] = "S";
-						floor[f][y-1][x] = "H";
-						floor[f][y+1][x] = "H";
-						floor[f][y][x-1] = "H";
-						floor[f][y][x+1] = "H";
-						floor[f][y-1][x-1] = "H";
-						floor[f][y-1][x+1] = "H";
-						floor[f][y+1][x+1] = "H";
-						floor[f][y+1][x-1] = "H";
+						floor[f][y - 1][x] = "H";
+						floor[f][y + 1][x] = "H";
+						floor[f][y][x - 1] = "H";
+						floor[f][y][x + 1] = "H";
+						floor[f][y - 1][x - 1] = "H";
+						floor[f][y - 1][x + 1] = "H";
+						floor[f][y + 1][x + 1] = "H";
+						floor[f][y + 1][x - 1] = "H";
 					}
 					else {
 						floor[f][y][x] = "H";
@@ -113,9 +113,30 @@ void ship::grid_hallways() {
 }
 
 void ship::grid_fillspace() {
-
-
-
+	std::cout << "filling empty space" << std::endl;
+	for (int f = 0; f < floorcount; f++) {
+		for (int y = 1; y < ysize; y++) {
+			for (int x = 1; x < xsize; x++) {
+				if ((floor[f][y][x] == " ")) {
+					floor[f][y][x] = ".";
+					if ((floor[f][y + 1][x] == "H" && floor[f][y][x + 1] == "H") ||
+						(floor[f][y - 1][x] == "H" && floor[f][y][x + 1] == "H") ||
+						(floor[f][y - 1][x] == "H" && floor[f][y][x - 1] == "H") ||
+						(floor[f][y + 1][x] == "H" && floor[f][y][x - 1] == "H")
+						) {
+						floor[f][y][x] = ",";
+					}
+					else if ((floor[f][y + 1][x] == "H") || (floor[f][y - 1][x] == "H")) {
+						floor[f][y][x] = "_";
+					}
+					else if ((floor[f][y][x+1] == "H") || (floor[f][y][x-1] == "H")) {
+						floor[f][y][x] = "|";
+					}
+					
+				}
+			}
+		}
+	}
 
 }
 
