@@ -88,7 +88,20 @@ void ship::grid_hallways() {
 
 			for (int y = 0; y < ysize; y += halldist) {
 				for (int x = 0; x < xsize; x += halldist) {
-					floor[f][y][x] = "S";
+					if ((y != 0 && x != 0) && (y != ysize-1&& x != xsize-1)) {
+						floor[f][y][x] = "S";
+						floor[f][y-1][x] = "H";
+						floor[f][y+1][x] = "H";
+						floor[f][y][x-1] = "H";
+						floor[f][y][x+1] = "H";
+						floor[f][y-1][x-1] = "H";
+						floor[f][y-1][x+1] = "H";
+						floor[f][y+1][x+1] = "H";
+						floor[f][y+1][x-1] = "H";
+					}
+					else {
+						floor[f][y][x] = "H";
+					}
 				}
 			}
 		}
