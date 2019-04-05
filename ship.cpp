@@ -11,6 +11,7 @@ ship::ship(int x, int y, int i) {
 	minrs = 3;
 	maxrs = 4;
 	grid = false;
+	halldist = -1;
 	floor.resize(i);//sets the floor size
 	rmdoors.resize(i);// sets the floor size for hallways gerneration
 	for (i = 0; i < floor.size(); i++) {
@@ -25,7 +26,7 @@ ship::ship(int x, int y, int i) {
 }
 
 ship::ship(int x, int y, int i, bool t) {
-
+	halldist = 10;
 	xsize = x;
 	ysize = y;
 	floorcount = i;
@@ -68,6 +69,35 @@ void ship::gen_blank_map() {//resets the entire map
 	}
 }
 
+void ship::grid_hallways() {
+	if (halldist != -1) {
+		//int xmid = xsize / 2;
+		//int ymid = ysize / 2;
+		for (int f = 0; f < floorcount; f++) {
+			for (int y = 0; y < ysize; y += halldist) {
+				for (int x = 0; x < xsize; x ++) {
+					floor[f][y][x] = "H";
+				}
+			}
+
+			for (int y = 0; y < ysize; y ++) {
+				for (int x = 0; x < xsize; x+= halldist) {
+					floor[f][y][x] = "H";
+				}
+			}
+
+			for (int y = 0; y < ysize; y += halldist) {
+				for (int x = 0; x < xsize; x += halldist) {
+					floor[f][y][x] = "S";
+				}
+			}
+		}
+	}
+	else {
+		std::cout << "not a grid ship" << std::endl;
+	}
+
+}
 
 void ship::grid_fillspace() {
 

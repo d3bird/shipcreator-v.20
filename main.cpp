@@ -68,21 +68,12 @@ int main() {
 			delete s;
 			break;
 		case 2:
-			std::cout << "input max width, then max height" << std::endl;
-			std::cin >> xsize;
-			std::cin >> ysize;
-			std::cout << "how many floors do you want" << std::endl;
-			std::cin >> floorcount;
-			if (floorcount <= 0) {
-				floorcount = 1;
-			}
-			s = new ship(xsize, ysize, floorcount, true);
-			s->grid_fillspace();
-			s->print();
-
-			delete s;
+		
 			break;
 		case 3:
+			
+			break;
+		case 4:
 			std::cout << "input max width, then max height" << std::endl;
 			std::cin >> xsize;
 			std::cin >> ysize;
@@ -92,12 +83,11 @@ int main() {
 				floorcount = 1;
 			}
 			s = new ship(xsize, ysize, floorcount, true);
+			s->grid_hallways();
 			s->grid_fillspace();
 			s->print();
 
 			delete s;
-			break;
-		case 4:
 			break;
 		case 5:
 			break;

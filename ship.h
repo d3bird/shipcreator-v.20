@@ -54,7 +54,7 @@ public:
 	// functions for generating grid ships
 
 	void grid_fillspace();
-
+	void grid_hallways();
 
 	void setmaxroomsize(int x) { maxrs = x; }
 	void setminroomsize(int x) { minrs = x; }
@@ -65,6 +65,8 @@ public:
 
 private:
 	bool grid;
+
+	int halldist;
 
 	int maxrs;
 	int minrs;
