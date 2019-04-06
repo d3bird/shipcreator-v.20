@@ -113,7 +113,7 @@ void ship::grid_hallways() {
 }
 
 void ship::grid_fillspace() {
-	std::cout << "filling empty space" << std::endl;
+	//std::cout << "filling empty space" << std::endl;
 	for (int f = 0; f < floorcount; f++) {
 		for (int y = 1; y < ysize; y++) {
 			for (int x = 1; x < xsize; x++) {
@@ -140,6 +140,26 @@ void ship::grid_fillspace() {
 
 }
 
+void ship::grid_detectrooms() {
+	for (int f = 0; f < floorcount; f++) {
+		for (int y = 1; y < ysize; y++) {
+			for (int x = 1; x < xsize; x++) {
+				if ((floor[f][y][x] == "," && floor[f][y-1][x] == "|" && floor[f][y][x+1] == "_")|| (floor[f][y][x] == "," && floor[f][y - 1][x] == "," && floor[f][y][x + 1] == "_") ) {
+					roomnumber++;
+				}
+				else if ((floor[f][y][x] == ".") && ((floor[f][y - 1][x] == ","&& floor[f][y][x + 1] == ",") || (floor[f][y - 1][x] == ","&& floor[f][y][x - 1] == ",") ||
+					(floor[f][y + 1][x] == ","&& floor[f][y][x + 1] == ",") || (floor[f][y + 1][x] == ","&& floor[f][y][x - 1] == ",")
+					)) {
+
+					floor[f][y][x] = ",";
+
+				}
+			}
+		}
+	}
+
+	std::cout << "rooms found " << roomnumber << std::endl;
+}
 
 void ship::fillspace() {// fills the entire map with rooms
 	srand(time(NULL));

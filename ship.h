@@ -55,6 +55,7 @@ public:
 
 	void grid_fillspace();
 	void grid_hallways();
+	void grid_detectrooms();
 
 	void setmaxroomsize(int x) { maxrs = x; }
 	void setminroomsize(int x) { minrs = x; }

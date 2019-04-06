@@ -85,6 +85,7 @@ int main() {
 			s = new ship(xsize, ysize, floorcount, true);
 			s->grid_hallways();
 			s->grid_fillspace();
+			s->grid_detectrooms();
 			s->print();
 
 			delete s;
