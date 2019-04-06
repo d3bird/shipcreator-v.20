@@ -36,7 +36,8 @@ private:
 class ship
 {
 public:
-	ship(int x, int y, int i);
+	ship(int x, int y, int i);// for the random ship
+	ship(int x, int y, int i, bool t);// for the grid ship
 	~ship();
 
 	void gen_blank_map();
@@ -49,6 +50,13 @@ public:
 
 	void detectRoom();
 
+
+	// functions for generating grid ships
+
+	void grid_fillspace();
+	void grid_hallways();
+	void grid_detectrooms();
+
 	void setmaxroomsize(int x) { maxrs = x; }
 	void setminroomsize(int x) { minrs = x; }
 	int getmaxroomsize() { return maxrs; }
@@ -57,6 +65,10 @@ public:
 	std::string ** getmap() { return map; }
 
 private:
+	bool grid;
+
+	int halldist;
+
 	int maxrs;
 	int minrs;
 	int xsize;

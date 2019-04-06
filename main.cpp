@@ -21,15 +21,15 @@ void drawmenu() {
 	std::cout << "1: blank ship" << std::endl;
 	std::cout << "2: ship with filled rooms (no life)" << std::endl;
 	std::cout << "3: ship with filled rooms (with life)" << std::endl;
-	std::cout << "4 grid ship" << std::endl;
-	std::cout << "4 grid ship with filled " << std::endl;
-	std::cout << "5: add room" << std::endl;
-	std::cout << "6: remoce room" << std::endl;
-	std::cout << "7: add life form" << std::endl;
-	std::cout << "10: remove life form" << std::endl;
-	std::cout << "11: settings" << std::endl;
-	std::cout << "12: quit" << std::endl;
-	std::cout << "13: help" << std::endl;
+	std::cout << "4: grid ship" << std::endl;
+	std::cout << "5: grid ship with filled " << std::endl;
+	std::cout << "6: add room" << std::endl;
+	std::cout << "7: remoce room" << std::endl;
+	std::cout << "8: add life form" << std::endl;
+	std::cout << "9: remove life form" << std::endl;
+	std::cout << "10: settings" << std::endl;
+	std::cout << "11: quit" << std::endl;
+	std::cout << "12: help" << std::endl;
 
 }
 
@@ -59,25 +59,57 @@ int main() {
 				floorcount = 1;
 			}
 			s =new ship(xsize, ysize, floorcount);
-			std::cout << "filling space" << std::endl;
+			//std::cout << "filling space" << std::endl;
 			s->fillspace();
-			std::cout << "merging rooms" << std::endl;
+			//std::cout << "merging rooms" << std::endl;
 			s->mergerooms();
-			std::cout << "generating hallways" << std::endl;
+			//std::cout << "generating hallways" << std::endl;
 			s->generateHallways();
-			std::cout << "printing" << std::endl;
+			//std::cout << "printing" << std::endl;
 			s->print();
 			printKey();
 		//	s->detectRoom();
 			delete s;
 			break;
 		case 2:
+		
 			break;
 		case 3:
+			
 			break;
 		case 4:
+			std::cout << "input max width, then max height" << std::endl;
+			std::cin >> xsize;
+			std::cin >> ysize;
+			std::cout << "how many floors do you want" << std::endl;
+			std::cin >> floorcount;
+			if (floorcount <= 0) {
+				floorcount = 1;
+			}
+			s = new ship(xsize, ysize, floorcount, true);
+			s->grid_hallways();
+			s->grid_fillspace();
+			s->grid_detectrooms();
+			s->print();
+
+			delete s;
 			break;
 		case 5:
+			std::cout << "input max width, then max height" << std::endl;
+			std::cin >> xsize;
+			std::cin >> ysize;
+			std::cout << "how many floors do you want" << std::endl;
+			std::cin >> floorcount;
+			if (floorcount <= 0) {
+				floorcount = 1;
+			}
+			s = new ship(xsize, ysize, floorcount, true);
+			s->grid_hallways();
+			s->grid_fillspace();
+			s->grid_detectrooms();
+			s->print();
+
+			delete s;
 			break;
 		case 6:
 			break;
@@ -92,7 +124,7 @@ int main() {
 		case 11:
 			break;
 		case 12:
-			running = false;
+		
 			break;
 		case 13:
 			break;

@@ -11,6 +11,8 @@ ship::ship(int x, int y, int i) {
 	floorcount = i;
 	minrs = 3;
 	maxrs = 4;
+	grid = false;
+	halldist = -1;
 	floor.resize(i);//sets the floor size
 	rmdoors.resize(i);// sets the floor size for hallways gerneration
 	for (i = 0; i < floor.size(); i++) {
@@ -24,7 +26,34 @@ ship::ship(int x, int y, int i) {
 	gen_blank_map();
 }
 
+
 //deconstructor for the ship
+
+ship::ship(int x, int y, int i, bool t) {
+	halldist = 10;
+	xsize = x;
+	ysize = y;
+	floorcount = i;
+	minrs = 3;
+	maxrs = 4;
+	grid = t;
+	floor.resize(i);//sets the floor size
+	rmdoors.resize(i);// sets the floor size for hallways gerneration
+	for (i = 0; i < floor.size(); i++) {
+
+		floor[i] = new std::string *[xsize];
+		for (x = 0; x < xsize; x++) {
+			floor[i][x] = new std::string[ysize];
+		}
+	}
+	std::cout << "generating blank map" << std::endl;
+	gen_blank_map();
+
+
+}
+
+
+
 ship::~ship() {
 	for (int i = 0; i < floor.size(); i++) {
 		for (int x = 0; x < xsize; x++) {
@@ -47,10 +76,104 @@ void ship::gen_blank_map() {
 	}
 }
 
+void ship::grid_hallways() {
+	if (halldist != -1) {
+		//int xmid = xsize / 2;
+		//int ymid = ysize / 2;
+		for (int f = 0; f < floorcount; f++) {
+			for (int y = 0; y < ysize; y += halldist) {
+				for (int x = 0; x < xsize; x++) {
+					floor[f][y][x] = "H";
+				}
+			}
 
+			for (int y = 0; y < ysize; y++) {
+				for (int x = 0; x < xsize; x += halldist) {
+					floor[f][y][x] = "H";
+				}
+			}
 
-//fills the entire ship with randomly generated rooms
-void ship::fillspace() {
+			for (int y = 0; y < ysize; y += halldist) {
+				for (int x = 0; x < xsize; x += halldist) {
+					if ((y != 0 && x != 0) && (y != ysize - 1 && x != xsize - 1)) {
+						floor[f][y][x] = "S";
+						floor[f][y - 1][x] = "H";
+						floor[f][y + 1][x] = "H";
+						floor[f][y][x - 1] = "H";
+						floor[f][y][x + 1] = "H";
+						floor[f][y - 1][x - 1] = "H";
+						floor[f][y - 1][x + 1] = "H";
+						floor[f][y + 1][x + 1] = "H";
+						floor[f][y + 1][x - 1] = "H";
+					}
+					else {
+						floor[f][y][x] = "H";
+					}
+				}
+			}
+		}
+	}
+	else {
+		std::cout << "not a grid ship" << std::endl;
+	}
+
+}
+
+void ship::grid_fillspace() {
+	//std::cout << "filling empty space" << std::endl;
+	for (int f = 0; f < floorcount; f++) {
+		for (int y = 1; y < ysize; y++) {
+			for (int x = 1; x < xsize; x++) {
+				if ((floor[f][y][x] == " ")) {
+					floor[f][y][x] = ".";
+					if ((floor[f][y + 1][x] == "H" && floor[f][y][x + 1] == "H") ||
+						(floor[f][y - 1][x] == "H" && floor[f][y][x + 1] == "H") ||
+						(floor[f][y - 1][x] == "H" && floor[f][y][x - 1] == "H") ||
+						(floor[f][y + 1][x] == "H" && floor[f][y][x - 1] == "H")
+						) {
+						floor[f][y][x] = ",";
+					}
+					else if ((floor[f][y + 1][x] == "H") || (floor[f][y - 1][x] == "H")) {
+						floor[f][y][x] = "_";
+					}
+					else if ((floor[f][y][x+1] == "H") || (floor[f][y][x-1] == "H")) {
+						floor[f][y][x] = "|";
+					}
+					
+				}
+			}
+		}
+	}
+
+}
+
+void ship::grid_detectrooms() {
+	for (int f = 0; f < floorcount; f++) {
+		for (int y = 1; y < ysize; y++) {
+			for (int x = 1; x < xsize; x++) {
+				if ((floor[f][y][x] == "," && floor[f][y - 1][x] == "|" && floor[f][y][x + 1] == "_") || (floor[f][y][x] == "," && floor[f][y - 1][x] == "," && floor[f][y][x + 1] == "_")) {
+					roomnumber++;
+				}
+				else if ((floor[f][y][x] == ".") && ((floor[f][y - 1][x] == ","&& floor[f][y][x + 1] == ",") || (floor[f][y - 1][x] == ","&& floor[f][y][x - 1] == ",") ||
+					(floor[f][y + 1][x] == ","&& floor[f][y][x + 1] == ",") || (floor[f][y + 1][x] == ","&& floor[f][y][x - 1] == ",")
+					)) {
+
+					floor[f][y][x] = ",";
+
+				}
+				//fills the entire ship with randomly generated rooms
+
+			
+				
+			}
+		}
+	}
+
+	std::cout << "rooms found " << roomnumber << std::endl;
+}
+
+void ship::fillspace() {// fills the entire map with rooms
+
 	srand(time(NULL));
 	int stairlim = 3;
 	bool free = true;
