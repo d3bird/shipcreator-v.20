@@ -1,6 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include "ship.h"
+#include "monster.h"
+#include <vector>
+#include <fstream>
+
+std::vector<monster> races;
+std::vector<monster> monsters;
+std::vector<std::string> names;
 
 void printKey() {
 	std::cout << ". = space in the room" << std::endl;
@@ -10,7 +17,12 @@ void printKey() {
 	std::cout << "_ = wall" << std::endl;
 	std::cout << "H = hallway" << std::endl;
 	std::cout << "s stair case to floor right above or below" << std::endl;
-
+	if (monsters.size() > 0) {
+		std::cout << "these are the creatures on ship" << std::endl;
+		for (int i = 0; i < monsters.size(); i++) {
+			std::cout << monsters[i].getid() << " = " << monsters[i].getname() << " who is a " << monsters[i].getrace() << std::endl;
+		}
+	}
 }
 
 void drawmenu() {
@@ -31,6 +43,30 @@ void drawmenu() {
 
 }
 
+void readinnames() {
+	std::string line;
+	std::ifstream myfile("names");
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			//std::cout << line << '\n';
+			names.push_back(line);
+		}
+		myfile.close();
+	}
+
+	else std::cout << "Unable to open file"<<std::endl;
+
+}
+
+void exportraces() {
+	std::ofstream myfile;
+	myfile.open("races");
+	myfile << "Writing this to a file.\n";
+	myfile.close();
+}
+
 int main() {
 	bool running = true;
 	drawmenu();
@@ -41,6 +77,10 @@ int main() {
 
 	ship *s;
 
+	readinnames();
+
+	std::cin.get();
+	running = false;
 	while (running) {
 
 		switch (input)

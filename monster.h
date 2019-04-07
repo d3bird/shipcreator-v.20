@@ -3,7 +3,7 @@
 class monster
 {
 public:
-	monster(char i){
+	monster(char i, std::string r){
 		xloc = 0;
 		floc = 0;
 		yloc = 0;
@@ -12,6 +12,7 @@ public:
 		Rdam = 0;
 		hp = 10;
 		maxhp = 10;
+		race = r;
 	}
 
 	~monster(){}
@@ -27,6 +28,12 @@ public:
 	int gety() { return yloc; }
 	int getf() { return floc; }
 
+	char getid() { return id; }
+	void setid(char i) { id = i; }
+	void setname(std::string na) { name = na; }
+	std::string getname() { return name; }
+	std::string getrace() { return race; }
+
 private:
 	int xloc;
 	int floc;
@@ -37,6 +44,7 @@ private:
 	int Rdam;
 	int ws;// how fast it works in a room
 	std::string name;
+	std::string race;
 	char id;
 };
 
