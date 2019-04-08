@@ -14,6 +14,7 @@ public:
 		maxhp = 10;
 		race = r;
 	}
+	
 
 	~monster(){}
 
@@ -34,6 +35,13 @@ public:
 	std::string getname() { return name; }
 	std::string getrace() { return race; }
 
+	void setmhp(int i) { maxhp = i; }
+	int getmhp() { return maxhp;}
+
+	int getMdam() { return Mdam; }
+	void setMdam(int i) { Mdam = i; }
+	int getRdam() { return Rdam; }
+	void setRdam(int i) { Rdam = i; }
 private:
 	int xloc;
 	int floc;
