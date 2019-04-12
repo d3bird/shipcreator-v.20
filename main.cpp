@@ -42,7 +42,7 @@ void drawmenu() {
 	std::cout << "4: grid ship" << std::endl;
 	std::cout << "5: grid ship with filled " << std::endl;
 	std::cout << "6: add room" << std::endl;
-	std::cout << "7: remoce room" << std::endl;
+	std::cout << "7: remove room" << std::endl;
 	std::cout << "8: add life form" << std::endl;
 	std::cout << "9: remove life form" << std::endl;
 	std::cout << "10: settings" << std::endl;
@@ -50,9 +50,6 @@ void drawmenu() {
 	std::cout << "12: help" << std::endl;
 
 }
-
-
-
 
 
 void readinnames() {
@@ -169,9 +166,6 @@ void printRaces() {
 
 
 }
-
-
-
 
 int main() {
 	bool running = true;
