@@ -3,16 +3,18 @@
 class monster
 {
 public:
-	monster(std::string i, std::string r){
+	monster(std::string ra,std::string i,int nums[4]){
 		xloc = 0;
 		floc = 0;
 		yloc = 0;
-		ws = 10;
-		Mdam = 5;
-		Rdam = 0;
-		hp = 10;
-		maxhp = 10;
-		race = r;
+		ws = nums[0];
+		Mdam = nums[1];
+		Rdam = nums[2];
+		hp = nums[3];
+		maxhp = nums[3];
+	
+		id = i;
+		race = ra;
 	}
 	
 
@@ -33,8 +35,10 @@ public:
 	void setid(std::string i) { id = i; }
 	void setname(std::string na) { name = na; }
 	std::string getname() { return name; }
-	std::string getrace() { return race; }
 
+	std::string getrace() { return race; }
+	void setrace(std::string i) { race = i; }
+	
 	void setmhp(int i) { maxhp = i; }
 	int getmhp() { return maxhp;}
 
@@ -42,6 +46,7 @@ public:
 	void setMdam(int i) { Mdam = i; }
 	int getRdam() { return Rdam; }
 	void setRdam(int i) { Rdam = i; }
+
 private:
 	int xloc;
 	int floc;

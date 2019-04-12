@@ -9,6 +9,12 @@ std::vector<monster*> races;
 std::vector<monster> monsters;
 std::vector<std::string> names;
 
+void addrace(std::string race, std::string id, int nums[4]) {
+	monster * temp = new monster(race, id, nums);
+	races.push_back(temp);
+	
+}
+
 void printKey() {
 	std::cout << ". = space in the room" << std::endl;
 	std::cout << ", = corner" << std::endl;
@@ -63,42 +69,54 @@ void readinraces() {
 	std::string line;
 	std::ifstream myfile("races");
 	int counter = 0;
-	std::string r;
-	monster* temp;
+	std::string race;
+	std::string id;
+	int nums[4];
 	int temp2;
 	if (myfile.is_open())
 	{
-		temp = new monster("a","temp");
+		//temp = new monster("a","temp");
 		while (getline(myfile, line))
 		{
 			
-			r = "";
-			//std::cout << line << '\n';
-			switch (counter){
+		
+			switch (counter) {
 			case 0:
-				r = line;
+				//std::cout << line << std::endl;
+				//temp->setrace(line);
+				race = line;
 				break;
 			case 1:
-				temp = new monster(line.substr(0, 2), r);
+				//	std::cout << line << std::endl;
+				id = line;
+				//temp->setid(r);
 				break;
 			case 2:
+
 				temp2 = atoi(line.c_str());
-				temp->setws(temp2);
+				//temp->setws(temp2);
+				nums[0] = temp2;
 				break;
 			case 3:
 				temp2 = atoi(line.c_str());
-				temp->setmhp(temp2);
+				//temp->setmhp(temp2);
+				nums[3] = temp2;
 				break;
 			case 4:
 				temp2 = atoi(line.c_str());
-				temp->setRdam(temp2);
+				nums[2] = temp2;
+			
+				//temp->setRdam(temp2);
 				break;
 			case 5:
 				temp2 = atoi(line.c_str());
-				temp->setMdam(temp2);
+				//temp->setMdam(temp2);
+				nums[1] = temp2;
+				addrace(race, id, nums);
+				
 				break;
 			default:
-				std::cout << "there was a problem exporting the races" << std::endl;
+				std::cout << "there was a problem reading the races" << std::endl;
 				break;
 			}
 			counter++;
@@ -146,32 +164,6 @@ void printRaces() {
 }
 
 
-std::string getinput() {
-
-	char var[10];
-	bool valid = false;
-	std::string output="";
-	while (!valid) {
-		std::cout << "Enter a string 9 characters long: ";
-		std::cin.getline(var, 10, '\n');
-
-		if (std::cin.fail()) {
-			valid = false;
-			std::cout << std::endl << "Input exceeds variable size. Please try again." << std::endl;
-			std::cin.clear();
-			//std::cin.ignore(std::numeric_limits<std::streamsize>::max, '\n');
-		} // end fail check
-
-		else valid = true;
-
-	} // end input loop
-	for (int i = 0; i < 10; i++) {
-		output.push_back(var[i]);
-	}
-
-
-		return output;
-}
 
 int main() {
 	bool running = true;
@@ -189,17 +181,13 @@ int main() {
 	//std::cin.get();
 	running = true;
 	std::string line;
-	std::string r;
+	
+	
+	std::string race;
+	std::string id;
+	int nums[4];
 	int temp2;
-	monster * temp;
-	char id[256];
-	std::string sub;
-	std::string sinput;
-	/*while (true) {
-		std::getline(std::cin, sinput);
-		std::cout << "you said " << sinput << std::endl;
-	}
-*/
+
 
 	while (running) {
 
@@ -250,7 +238,7 @@ int main() {
 				}
 			}
 			getline(std::cin, line);
-			r = line;
+			race = line;
 			
 			std::cout << "enter race id char" << std::endl;
 			while (running) {
@@ -264,8 +252,8 @@ int main() {
 			getline(std::cin, line);
 			//std::cout << line.substr(0, 1) << std::endl;	
 			//sub = line.substr(0, 1);
-			 temp = new monster(line, r);
-			 temp->setid(line);
+			
+			id = line;
 			std::cout << "enter race work speed" << std::endl;
 			while (running) {
 				if (std::cin.peek() == '\n' || std::cin.peek() == ' ') {
@@ -277,24 +265,27 @@ int main() {
 			}
 			getline(std::cin, line);
 			temp2 = atoi(line.c_str());
-			
-			temp->setws(temp2);
+			nums[0] = temp2;
+			//temp->setws(temp2);
 			std::cout << "enter race max hp" << std::endl;
 			getline(std::cin, line);
 			temp2 = atoi(line.c_str());
-			
-			temp->setmhp(temp2);
+			nums[3] = temp2;
+			//temp->setmhp(temp2);
 			std::cout << "enter race ranged damage" << std::endl;
 			getline(std::cin, line);
 			temp2 = atoi(line.c_str());
-			
-			temp->setRdam(temp2);
+			nums[2] = temp2;
+			//temp->setRdam(temp2);
 			std::cout << "enter race melee damage" << std::endl;
 			getline(std::cin, line);
 			temp2 = atoi(line.c_str());
 			
-			temp->setMdam(temp2);
-			races.push_back(temp);
+			//temp->setMdam(temp2);
+			nums[1] = temp2;
+
+			addrace(race, id, nums);
+			
 			break;
 		case 8:
 			std::cout << "remove a race" << std::endl;
