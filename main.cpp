@@ -43,6 +43,7 @@ void drawmenu() {
 	std::cout << "6: remoce room" << std::endl;
 	std::cout << "7: add life form" << std::endl;
 	std::cout << "8: remove life form" << std::endl;
+	std::cout << "9: print lifeform list" << std::endl;
 	std::cout << "11: settings" << std::endl;
 	std::cout << "12: quit" << std::endl;
 	std::cout << "13: help" << std::endl;
@@ -151,12 +152,13 @@ void exportraces() {
 
 void printRaces() {
 	for (int i = 0; i < races.size(); i++) {
-		std::cout << races[i]->getrace() << std::endl;
-		std::cout << races[i]->getid() << std::endl;
-		std::cout << races[i]->getws() << std::endl;
-		std::cout << races[i]->getmhp() << std::endl;
-		std::cout << races[i]->getRdam() << std::endl;
-		std::cout << races[i]->getMdam() << std::endl;
+		std::cout << "race number: "<<i+1 << std::endl;
+		std::cout <<"race = " <<races[i]->getrace() << std::endl;
+		std::cout << "id = " << races[i]->getid() << std::endl;
+		std::cout << "work speed = " << races[i]->getws() << std::endl;
+		std::cout << "max hp = " << races[i]->getmhp() << std::endl;
+		std::cout << "ranged damage = " << races[i]->getRdam() << std::endl;
+		std::cout << "melee damage = " << races[i]->getMdam() << std::endl;
 		std::cout << std::endl;
 	}
 
@@ -289,9 +291,27 @@ int main() {
 			break;
 		case 8:
 			std::cout << "remove a race" << std::endl;
+			std::cout << "input number to remove" << std::endl;
 			printRaces();
+			if (races.size() > 0) {
+				std::cin >> input;
+				input--;
+
+				while (true) {
+					if (input<0 || input>races.size()) {
+						std::cout << "input a valid number" << std::endl;
+					}
+					else {
+						races.erase(races.begin() + input);
+						break;
+					}
+				}
+			}
 			break;
 		case 9:
+			printRaces();
+			std::cout << "press any key to contiue" << std::endl;
+			std::cin.get();
 			break;
 		case 10:
 			break;
