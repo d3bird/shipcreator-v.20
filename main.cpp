@@ -174,14 +174,14 @@ int main(int argc, char *argv[]) {
 	int floorcount;
 	int input = -1; 
 	int halldist = 10;
-	bool curses =true;
+	bool curses =false;
  	if(!curses){
 	drawmenu();
 	}else{
-		initscr();
-		cbreak();
-		noecho();
-		keypad(stdscr, TRUE);
+		//initscr();
+		//cbreak();
+		//noecho();
+		//keypad(stdscr, TRUE);
 	}
 	ship *s;
 
@@ -386,7 +386,7 @@ int main(int argc, char *argv[]) {
 			drawmenu();
 		}
 	}
-	endwin();
+//	endwin();
 	exportraces();
 	return 0;
 }
