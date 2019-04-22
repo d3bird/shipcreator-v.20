@@ -40,7 +40,7 @@ void drawmenu() {
 	std::cout << "2: ship with filled rooms (no life)" << std::endl;
 	std::cout << "3: ship with filled rooms (with life)" << std::endl;
 	std::cout << "4: grid ship" << std::endl;
-	std::cout << "5: grid ship with filled " << std::endl;
+	std::cout << "5: grid ship with filled rooms" << std::endl;
 	std::cout << "6: add room" << std::endl;
 	std::cout << "7: remove room" << std::endl;
 	std::cout << "8: add life form" << std::endl;
@@ -173,7 +173,8 @@ int main() {
 	int xsize;
 	int ysize;
 	int floorcount;
-	int input = -1;
+	int input = -1; 
+	int halldist = 10;
 
 	ship *s;
 
@@ -189,7 +190,7 @@ int main() {
 	std::string id;
 	int nums[4];
 	int temp2;
-
+	int temp3;
 
 	while (running) {
 
@@ -227,6 +228,18 @@ int main() {
 			std::cout << "input max width, then max height" << std::endl;
 			std::cin >> xsize;
 			std::cin >> ysize;
+			/*std::cout <<"hall distance "<< halldist - 1 << std::endl;
+			std::cout << "difference between input "<< xsize % halldist-1  << std::endl;*/
+			if (xsize % halldist-1  != 0) {
+				std::cout << "x size reduce to fit grid" << std::endl;
+				xsize -= (xsize % halldist - 1);
+			}
+			/*std::cout << "ydiff" << std::endl;
+			std::cout << ysize % halldist-1  << std::endl;*/
+			if (ysize % halldist-1  != 0) {
+				std::cout << "y size reduce to fit grid" << std::endl;
+				ysize -= (ysize % halldist - 1);
+			}
 			std::cout << "how many floors do you want" << std::endl;
 			std::cin >> floorcount;
 			if (floorcount <= 0) {

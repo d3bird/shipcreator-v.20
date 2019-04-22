@@ -12,10 +12,12 @@ struct dcor
 class room {
 public:
 
-	room(int xl, int yl) {
+	room(int xl, int yl,int f) {
 		x = xl;
-		
 		y = yl;
+		bottomfloor = f;
+		multifloor = false;
+		topfloor = f;
 		rsize = 0;
 	}
 
@@ -25,10 +27,18 @@ public:
 	int size() { return rsize; }
 	int getx() { return x; }
 	int gety() { return y; }
+	bool ismultifloor() { return multifloor; }
+	void settopfloor(int f) { topfloor = f; }
+	int gettopfloor() { return topfloor; }
+	int getbottomfloor() { return bottomfloor; }
+
 private:
 	int rsize;
 	int x;
 	int y;
+	int bottomfloor;
+	int topfloor;
+	bool multifloor;
 	std::vector<int> turns;
 };
 
@@ -62,12 +72,15 @@ public:
 	int getmaxroomsize() { return maxrs; }
 	int getminroomsize() { return minrs; }
 
+	int gethalldist() { return halldist; }
+	void sethalldist(int i) { halldist = i; }
+
 	std::string ** getmap() { return map; }
 
 private:
 	bool grid;
 
-	int halldist;
+	int halldist;//the size of rooms in the gridship
 
 	int maxrs;
 	int minrs;
