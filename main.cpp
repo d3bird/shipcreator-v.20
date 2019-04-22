@@ -51,7 +51,6 @@ void drawmenu() {
 
 }
 
-
 void readinnames() {
 	std::string line;
 	std::ifstream myfile("names");
@@ -249,6 +248,7 @@ int main() {
 			s->grid_hallways();
 			s->grid_fillspace();
 			s->grid_detectrooms();
+			s->grid_fillRooms();
 			s->print();
 
 			delete s;
@@ -266,6 +266,7 @@ int main() {
 			s->grid_hallways();
 			s->grid_fillspace();
 			s->grid_detectrooms();
+			s->grid_fillRooms();
 			s->print();
 
 			delete s;

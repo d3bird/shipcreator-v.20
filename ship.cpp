@@ -180,6 +180,11 @@ void ship::grid_detectrooms() {
 	std::cout << "rooms found " << roomnumber << std::endl;
 }
 
+void ship::grid_fillRooms() {
+
+
+}
+
 void ship::fillspace() {// fills the entire map with rooms
 
 	srand(time(NULL));

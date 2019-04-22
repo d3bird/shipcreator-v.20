@@ -8,6 +8,20 @@ struct dcor
 	int y;
 };
 
+class furniture{
+public:
+
+	
+
+private:
+	std::string name;
+	std::string id;
+	int xs;//xsize
+	int ys;//ysize
+	std::string section;//i.e. sciance, recreation, securitey e.c.t..
+
+};
+
 
 class room {
 public:
@@ -39,6 +53,7 @@ private:
 	int bottomfloor;
 	int topfloor;
 	bool multifloor;
+	std::string section;
 	std::vector<int> turns;
 };
 
@@ -65,6 +80,7 @@ public:
 
 	void grid_fillspace();
 	void grid_hallways();
+	void grid_fillRooms();
 	void grid_detectrooms();
 
 	void setmaxroomsize(int x) { maxrs = x; }
