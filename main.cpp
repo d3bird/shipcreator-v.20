@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <limits>
+#include <ncurses.h>
 std::vector<monster*> races;
 std::vector<monster> monsters;
 std::vector<std::string> names;
@@ -166,15 +167,22 @@ void printRaces() {
 
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 	bool running = true;
-	drawmenu();
 	int xsize;
 	int ysize;
 	int floorcount;
 	int input = -1; 
 	int halldist = 10;
-
+	bool curses =true;
+ 	if(!curses){
+	drawmenu();
+	}else{
+		initscr();
+		cbreak();
+		noecho();
+		keypad(stdscr, TRUE);
+	}
 	ship *s;
 
 	readinnames();
@@ -378,7 +386,7 @@ int main() {
 			drawmenu();
 		}
 	}
-
+	endwin();
 	exportraces();
 	return 0;
 }

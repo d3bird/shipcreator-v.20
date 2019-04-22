@@ -1,7 +1,9 @@
 CFLAGS = -wall -std=c++11 -lcurses
 
-
 run: run.out
+	./run.out
+
+runNC: run.out
 	./run.out
 
 
