@@ -181,7 +181,7 @@ void ship::grid_detectrooms() {
 }
 
 void ship::grid_fillRooms() {
-
+	std::cout<<"filling rooms"<<std::endl;
 
 }
 
