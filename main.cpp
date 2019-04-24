@@ -5,7 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <limits>
-#include <ncurses.h>
+
 std::vector<monster*> races;
 std::vector<monster> monsters;
 std::vector<std::string> names;
