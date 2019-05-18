@@ -5,7 +5,15 @@
 class furniture {
 public:
 
-	furniture();
+	furniture(std::string n, std::string i, std::string sec, int x, int y, bool ob, bool man) {
+		name = n;
+		id = i;
+		section = sec;
+		xs = x;
+		ys = y;
+		obstrut = ob;
+		manned = man;
+	}
 
 	std::string getname() { return name; }
 	void setname(std::string n) { name = n; }
